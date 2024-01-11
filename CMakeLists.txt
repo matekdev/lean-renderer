@@ -24,23 +24,17 @@ CPMAddPackage(
   GIT_TAG 0.9.9.8
 )
 
-# GLFW
+# GLFW & IMGUI
 CPMAddPackage(
-  NAME glfw
-  GITHUB_REPOSITORY glfw/glfw
-  GIT_TAG 3.3.9
-  OPTIONS
-	"GLFW_BUILD_TESTS Off"
-	"GLFW_BUILD_EXAMPLES Off"
-	"GLFW_BUILD_DOCS Off"
-    "GLFW_INSTALL Off"
-    "GLFW_USE_HYBRID_HPG On"
+  NAME imgui_cmake_wrapper
+  GITHUB_REPOSITORY matekdev/imgui_cmake_wrapper
+  GIT_TAG main
 )
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${HEADER_FILES})
 target_include_directories(${PROJECT_NAME} PUBLIC src)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 23)
-target_link_libraries(${PROJECT_NAME} PRIVATE glad glfw glm)
+target_link_libraries(${PROJECT_NAME} PRIVATE glad glm imgui_cmake_wrapper)
 
 # Copy shader files
 add_custom_target(copy_shaders ALL
