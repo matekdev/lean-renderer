@@ -1,8 +1,12 @@
 #include "console_panel.hpp"
 
+#include <glog/logging.h>
 #include <iostream>
 
-ConsolePanel::ConsolePanel() {}
+ConsolePanel::ConsolePanel()
+{
+    google::AddLogSink(this);
+}
 
 void ConsolePanel::Render()
 {
@@ -66,4 +70,13 @@ void ConsolePanel::ExecuteCommand(const std::string &command)
 void ConsolePanel::AddLog(const std::string &log)
 {
     _previousCommands.push_back(log);
+}
+
+void ConsolePanel::send(google::LogSeverity severity, const char *full_filename,
+                        const char *base_filename, int line,
+                        const struct ::tm *tm_time,
+                        const char *message, size_t message_len)
+{
+    std::string log(message, message_len);
+    AddLog(log);
 }

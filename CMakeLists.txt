@@ -31,10 +31,18 @@ CPMAddPackage(
   GIT_TAG main
 )
 
+# GLOG
+CPMAddPackage(
+  NAME glog
+  GITHUB_REPOSITORY google/glog
+  GIT_TAG v0.5.0
+)
+option(BUILD_TESTS "Build tests" OFF)
+
 add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${HEADER_FILES})
 target_include_directories(${PROJECT_NAME} PUBLIC src)
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 23)
-target_link_libraries(${PROJECT_NAME} PRIVATE glad glm imgui_cmake_wrapper)
+target_link_libraries(${PROJECT_NAME} PRIVATE glad glm imgui_cmake_wrapper glog)
 
 # Copy shader files
 add_custom_target(copy_shaders ALL
