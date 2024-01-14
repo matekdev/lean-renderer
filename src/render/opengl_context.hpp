@@ -1,6 +1,6 @@
 #pragma once
 
-struct Window;
+class Window;
 
 class OpenGLContext
 {

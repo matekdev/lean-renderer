@@ -1,6 +1,7 @@
 #pragma once
 
 #include "render/opengl_context.hpp"
+#include "render/ui_context.hpp"
 
 #include <iostream>
 #include <memory>
@@ -22,6 +23,7 @@ public:
 private:
     GLFWwindow *_glfwWindow;
     std::unique_ptr<OpenGLContext> _glContext;
+    std::unique_ptr<UIContext> _uiContext;
 
     int _width;
     int _height;

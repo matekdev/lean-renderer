@@ -13,10 +13,12 @@ Window::Window(int width, int height, const std::string &windowTitle) : _width(w
         throw std::runtime_error("Failed to create GLFW Window.");
 
     _glContext = std::make_unique<OpenGLContext>(this);
+    _uiContext = std::make_unique<UIContext>(this);
 }
 
 Window::~Window()
 {
+    _uiContext->Destory();
     _glContext->Destroy();
 }
 
@@ -25,7 +27,9 @@ void Window::Run()
     while (!glfwWindowShouldClose(_glfwWindow))
     {
         _glContext->PreRender();
+        _uiContext->PreRender();
 
+        _uiContext->PostRender();
         _glContext->PostRender();
     }
 }
