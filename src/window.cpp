@@ -14,6 +14,8 @@ Window::Window(int width, int height, const std::string &windowTitle) : _width(w
 
     _glContext = std::make_unique<OpenGLContext>(this);
     _uiContext = std::make_unique<UIContext>(this);
+
+    _consolePanel = std::make_unique<ConsolePanel>();
 }
 
 Window::~Window()
@@ -28,6 +30,8 @@ void Window::Run()
     {
         _glContext->PreRender();
         _uiContext->PreRender();
+
+        _consolePanel->Render();
 
         _uiContext->PostRender();
         _glContext->PostRender();

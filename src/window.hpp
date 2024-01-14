@@ -3,6 +3,8 @@
 #include "render/opengl_context.hpp"
 #include "render/ui_context.hpp"
 
+#include "ui/console_panel.hpp"
+
 #include <iostream>
 #include <memory>
 
@@ -24,6 +26,8 @@ private:
     GLFWwindow *_glfwWindow;
     std::unique_ptr<OpenGLContext> _glContext;
     std::unique_ptr<UIContext> _uiContext;
+
+    std::unique_ptr<ConsolePanel> _consolePanel;
 
     int _width;
     int _height;
