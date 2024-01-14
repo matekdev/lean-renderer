@@ -16,15 +16,8 @@ void ConsolePanel::Render()
 
     ImGui::Begin("Console");
 
-    // Reserve enough left-over height for 1 separator + 1 input text
     const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
     ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar);
-    if (ImGui::BeginPopupContextWindow())
-    {
-        // if (ImGui::Selectable("Clear"))
-        //     ClearLog();
-        ImGui::EndPopup();
-    }
 
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
     for (const auto &log : _previousLogs)
@@ -72,6 +65,9 @@ void ConsolePanel::ExecuteCommand(const std::string &command)
 
     send(-1, nullptr, nullptr, -1, tmPtr, command.c_str(), command.size());
 
+    if (_input.contains("clear"))
+        _previousLogs.clear();
+
     _input = {};
     _scrollToBottom = true;
 }
@@ -84,10 +80,15 @@ void ConsolePanel::send(google::LogSeverity severity, const char *full_filename,
     std::string log(message, message_len);
     std::string severityString = SeversityToString(severity);
 
-    char buffer[12];
-    std::strftime(buffer, sizeof(buffer), "%H:%M:%S", tm_time);
+    char formattedTime[12];
+    std::strftime(formattedTime, sizeof(formattedTime), "%H:%M:%S", tm_time);
 
-    _previousLogs.push_back(std::string(buffer) + " " + severityString + log);
+    std::stringstream out;
+    out << std::string(formattedTime) << " ";
+    out << severityString;
+    out << log;
+
+    _previousLogs.push_back(out.str());
 }
 
 std::string ConsolePanel::SeversityToString(google::LogSeverity severity)

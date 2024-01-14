@@ -27,11 +27,6 @@ private:
 
     std::string _input;
     std::vector<std::string> _previousLogs;
-
-    ImVector<const char *> Commands;
-    ImVector<char *> History;
-    int HistoryPos; // -1: new line, 0..History.Size-1 browsing history.
-    ImGuiTextFilter Filter;
     bool _scrollToBottom;
 
     void ExecuteCommand(const std::string &command);
