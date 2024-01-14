@@ -2,6 +2,8 @@
 
 #include <glog/logging.h>
 #include <iostream>
+#include <chrono>
+#include <ctime>
 
 ConsolePanel::ConsolePanel()
 {
@@ -25,14 +27,18 @@ void ConsolePanel::Render()
     }
 
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
-    for (const auto &command : _previousCommands)
+    for (const auto &log : _previousLogs)
     {
         auto color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
-        if (command.contains("[error]"))
-            color = ImVec4(1.0f, 0.4f, 0.4f, 1.0f);
+        if (log.contains(INFO))
+            color = ImVec4(0.78f, 0.78f, 0.78f, 1.0f);
+        if (log.contains(WARNING))
+            color = ImVec4(0.99f, 0.73f, 0.01f, 1.0f);
+        else if (log.contains(ERROR))
+            color = ImVec4(0.99f, 0.01f, 0.01f, 1.0f);
 
         ImGui::PushStyleColor(ImGuiCol_Text, color);
-        ImGui::TextUnformatted(command.c_str());
+        ImGui::TextUnformatted(log.c_str());
         ImGui::PopStyleColor();
     }
 
@@ -61,15 +67,13 @@ void ConsolePanel::Render()
 
 void ConsolePanel::ExecuteCommand(const std::string &command)
 {
-    AddLog(command);
+    auto currentTime = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    const struct tm *tmPtr = std::localtime(&currentTime);
 
-    _input = "";
+    send(-1, nullptr, nullptr, -1, tmPtr, command.c_str(), command.size());
+
+    _input = {};
     _scrollToBottom = true;
-}
-
-void ConsolePanel::AddLog(const std::string &log)
-{
-    _previousCommands.push_back(log);
 }
 
 void ConsolePanel::send(google::LogSeverity severity, const char *full_filename,
@@ -78,5 +82,25 @@ void ConsolePanel::send(google::LogSeverity severity, const char *full_filename,
                         const char *message, size_t message_len)
 {
     std::string log(message, message_len);
-    AddLog(log);
+    std::string severityString = SeversityToString(severity);
+
+    char buffer[12];
+    std::strftime(buffer, sizeof(buffer), "%H:%M:%S", tm_time);
+
+    _previousLogs.push_back(std::string(buffer) + " " + severityString + log);
+}
+
+std::string ConsolePanel::SeversityToString(google::LogSeverity severity)
+{
+    switch (severity)
+    {
+    case google::GLOG_INFO:
+        return INFO;
+    case google::GLOG_WARNING:
+        return WARNING;
+    case google::GLOG_ERROR:
+        return ERROR;
+    default:
+        return {};
+    }
 }

@@ -21,8 +21,12 @@ public:
               const char *message, size_t message_len) override;
 
 private:
+    const std::string INFO = "[INFO] ";
+    const std::string WARNING = "[WARNING] ";
+    const std::string ERROR = "[ERROR] ";
+
     std::string _input;
-    std::vector<std::string> _previousCommands;
+    std::vector<std::string> _previousLogs;
 
     ImVector<const char *> Commands;
     ImVector<char *> History;
@@ -31,5 +35,5 @@ private:
     bool _scrollToBottom;
 
     void ExecuteCommand(const std::string &command);
-    void AddLog(const std::string &log);
+    std::string SeversityToString(google::LogSeverity severity);
 };
