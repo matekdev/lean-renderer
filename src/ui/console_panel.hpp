@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include "imgui.h"
 #include "imgui_stdlib.h"
@@ -16,7 +17,7 @@ public:
 
 private:
     std::string _input;
-    ImVector<std::string> _previousCommands;
+    std::vector<std::string> _previousCommands;
 
     ImVector<const char *> Commands;
     ImVector<char *> History;

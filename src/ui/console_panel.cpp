@@ -1,5 +1,7 @@
 #include "console_panel.hpp"
 
+#include <iostream>
+
 ConsolePanel::ConsolePanel() {}
 
 void ConsolePanel::Render()
@@ -21,8 +23,13 @@ void ConsolePanel::Render()
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
     for (const auto &command : _previousCommands)
     {
-        ImVec4 color = ImVec4(1.0f, 0.8f, 0.6f, 1.0f);
+        auto color = ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+        if (command.contains("[error]"))
+            color = ImVec4(1.0f, 0.4f, 0.4f, 1.0f);
+
+        ImGui::PushStyleColor(ImGuiCol_Text, color);
         ImGui::TextUnformatted(command.c_str());
+        ImGui::PopStyleColor();
     }
 
     if (_scrollToBottom || (ImGui::GetScrollY() >= ImGui::GetScrollMaxY()))
