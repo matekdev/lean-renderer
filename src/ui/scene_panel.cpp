@@ -8,6 +8,7 @@
 ScenePanel::ScenePanel()
 {
     _frameBuffer = FrameBuffer();
+    Resize(800, 600);
 }
 
 void ScenePanel::Render()
