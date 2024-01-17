@@ -4,10 +4,6 @@
 #include <vector>
 
 #include <glog/logging.h>
-#include "imgui.h"
-#include "imgui_stdlib.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
 
 class ConsolePanel : public google::LogSink
 {

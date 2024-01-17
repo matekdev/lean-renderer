@@ -6,7 +6,7 @@ Window::Window(int width, int height, const std::string &windowTitle) : _width(w
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
     _glfwWindow = glfwCreateWindow(width, height, windowTitle.c_str(), nullptr, nullptr);
     if (!_glfwWindow)
@@ -15,6 +15,7 @@ Window::Window(int width, int height, const std::string &windowTitle) : _width(w
     _glContext = std::make_unique<OpenGLContext>(this);
     _uiContext = std::make_unique<UIContext>(this);
 
+    _scenePanel = std::make_unique<ScenePanel>();
     _consolePanel = std::make_unique<ConsolePanel>();
 }
 
@@ -31,6 +32,7 @@ void Window::Run()
         _glContext->PreRender();
         _uiContext->PreRender();
 
+        _scenePanel->Render();
         _consolePanel->Render();
 
         _uiContext->PostRender();

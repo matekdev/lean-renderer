@@ -3,6 +3,7 @@
 #include "render/opengl_context.hpp"
 #include "render/ui_context.hpp"
 
+#include "ui/scene_panel.hpp"
 #include "ui/console_panel.hpp"
 
 #include <iostream>
@@ -27,6 +28,7 @@ private:
     std::unique_ptr<OpenGLContext> _glContext;
     std::unique_ptr<UIContext> _uiContext;
 
+    std::unique_ptr<ScenePanel> _scenePanel;
     std::unique_ptr<ConsolePanel> _consolePanel;
 
     int _width;
