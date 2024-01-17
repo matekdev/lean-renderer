@@ -12,6 +12,10 @@ Window::Window(int width, int height, const std::string &windowTitle) : _width(w
     if (!_glfwWindow)
         throw std::runtime_error("Failed to create GLFW Window.");
 
+    glfwSetWindowUserPointer(_glfwWindow, this);
+    glfwMakeContextCurrent(_glfwWindow);
+    gladLoadGL();
+
     _glContext = std::make_unique<OpenGLContext>(this);
     _uiContext = std::make_unique<UIContext>(this);
 
