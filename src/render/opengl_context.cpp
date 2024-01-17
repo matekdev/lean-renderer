@@ -10,9 +10,6 @@ OpenGLContext::OpenGLContext(Window *window) : _window(window)
 
 void OpenGLContext::PreRender()
 {
-    glViewport(0, 0, _window->GetWidth(), _window->GetHeight());
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void OpenGLContext::PostRender()

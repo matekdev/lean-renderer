@@ -2,6 +2,12 @@
 
 FrameBuffer::FrameBuffer() : _fbo{0}, _textureId{0}, _depthId{0}, _width{0}, _height{0} {}
 
+FrameBuffer::~FrameBuffer()
+{
+    Unbind();
+    DeleteBuffer();
+}
+
 void FrameBuffer::CreateBuffer(int width, int height)
 {
     _width = width;
@@ -56,7 +62,6 @@ void FrameBuffer::Bind()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
     glViewport(0, 0, _width, _height);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void FrameBuffer::Unbind()

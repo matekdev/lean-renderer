@@ -14,4 +14,6 @@ private:
     FrameBuffer _frameBuffer;
     int _width;
     int _height;
+
+    void InternalRender();
 };

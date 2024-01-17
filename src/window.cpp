@@ -21,7 +21,7 @@ Window::Window(int width, int height, const std::string &windowTitle) : _width(w
 
 Window::~Window()
 {
-    _uiContext->Destory();
+    _uiContext->Destroy();
     _glContext->Destroy();
 }
 

@@ -14,6 +14,8 @@ void ScenePanel::Render()
 {
     _frameBuffer.Bind();
 
+    InternalRender();
+
     _frameBuffer.Unbind();
 
     ImGui::Begin("Scene");
@@ -26,6 +28,12 @@ void ScenePanel::Render()
     ImGui::Image(reinterpret_cast<void *>(textureId), ImVec2{(float)_width, (float)_height}, ImVec2{0, 1}, ImVec2{1, 0});
 
     ImGui::End();
+}
+
+void ScenePanel::InternalRender()
+{
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void ScenePanel::Resize(int width, int height)

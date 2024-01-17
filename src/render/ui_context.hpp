@@ -9,5 +9,5 @@ public:
 
     void PreRender();
     void PostRender();
-    void Destory();
+    void Destroy();
 };
