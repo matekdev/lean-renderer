@@ -6,7 +6,6 @@ class FrameBuffer
 {
 public:
     FrameBuffer();
-    ~FrameBuffer();
 
     void CreateBuffer(int width, int height);
     void DeleteBuffer();

@@ -2,11 +2,6 @@
 
 FrameBuffer::FrameBuffer() : _fbo{0}, _textureId{0}, _depthId{0}, _width{0}, _height{0} {}
 
-FrameBuffer::~FrameBuffer()
-{
-    DeleteBuffer();
-}
-
 void FrameBuffer::CreateBuffer(int width, int height)
 {
     _width = width;
@@ -50,9 +45,9 @@ void FrameBuffer::DeleteBuffer()
     if (!_fbo)
         return;
 
+    glDeleteFramebuffers(GL_FRAMEBUFFER, &_fbo);
     glDeleteTextures(1, &_textureId);
     glDeleteTextures(1, &_depthId);
-    glDeleteFramebuffers(GL_FRAMEBUFFER, &_fbo);
     _textureId = 0;
     _depthId = 0;
 }
