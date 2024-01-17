@@ -33,7 +33,7 @@ void ScenePanel::Render()
 
 void ScenePanel::InternalRender()
 {
-    glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
+    glClearColor(0.31f, 0.41f, 0.46f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
