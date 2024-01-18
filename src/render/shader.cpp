@@ -32,6 +32,12 @@ GLuint Shader::GetId()
     return _id;
 }
 
+void Shader::SetMat4(const glm::mat4 &mat4, const std::string &name)
+{
+    GLint myLoc = glGetUniformLocation(GetId(), name.c_str());
+    glUniformMatrix4fv(myLoc, 1, GL_FALSE, glm::value_ptr(mat4));
+}
+
 GLuint Shader::CompileShader(GLenum shaderType, const std::string &shaderSource)
 {
     auto shaderId = glCreateShader(shaderType);
