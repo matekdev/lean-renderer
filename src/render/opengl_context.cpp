@@ -13,8 +13,8 @@ void OpenGLContext::PreRender()
 
 void OpenGLContext::PostRender()
 {
-    glfwPollEvents();
     glfwSwapBuffers(_window->GetNativeWindow());
+    glfwPollEvents();
 }
 
 void OpenGLContext::Destroy()

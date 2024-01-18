@@ -6,6 +6,7 @@ class FrameBuffer
 {
 public:
     FrameBuffer();
+    ~FrameBuffer();
 
     void CreateBuffer(int width, int height);
     void DeleteBuffer();
@@ -15,8 +16,8 @@ public:
 
 private:
     GLuint _fbo;
+    GLuint _rbo;
     GLuint _textureId;
-    GLuint _depthId;
     int _width;
     int _height;
 };

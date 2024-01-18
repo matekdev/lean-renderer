@@ -1,5 +1,7 @@
 #include "shader.hpp"
 
+#include "log.hpp"
+
 #include <fstream>
 
 Shader::Shader(const std::string &vertexShaderPath, const std::string &fragmentShaderPath)
@@ -49,7 +51,7 @@ GLuint Shader::CompileShader(GLenum shaderType, const std::string &shaderSource)
         GLchar *strInfoLog = new GLchar[length + 1];
         glGetShaderInfoLog(shaderId, length, &length, strInfoLog);
 
-        fprintf(stderr, "Compile error in shader: %s\n", strInfoLog);
+        LOG(ERROR) << "Compile error in shader: " << strInfoLog;
         delete[] strInfoLog;
     }
 

@@ -5,10 +5,8 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
-ScenePanel::ScenePanel()
+ScenePanel::ScenePanel() : _frameBuffer(FrameBuffer()), _model(Model()), _shader(Shader("shaders/vs.vert", "shaders/fs.frag"))
 {
-    _frameBuffer = FrameBuffer();
-    Resize(800, 600);
 }
 
 void ScenePanel::Render()
@@ -35,6 +33,8 @@ void ScenePanel::InternalRender()
 {
     glClearColor(0.31f, 0.41f, 0.46f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    _model.Draw(_shader);
 }
 
 void ScenePanel::Resize(int width, int height)
