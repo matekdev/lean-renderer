@@ -10,7 +10,7 @@ class ScenePanel
 public:
     ScenePanel();
 
-    void Render();
+    void Render(GLFWwindow *window);
     void Resize(int width, int height);
 
 private:

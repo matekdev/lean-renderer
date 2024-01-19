@@ -36,7 +36,7 @@ void Window::Run()
         _glContext->PreRender();
         _uiContext->PreRender();
 
-        _scenePanel->Render();
+        _scenePanel->Render(GetNativeWindow());
         _consolePanel->Render();
 
         _uiContext->PostRender();
