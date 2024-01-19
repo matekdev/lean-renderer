@@ -18,11 +18,13 @@ public:
     void Input(int width, int height, GLFWwindow *window, bool isWindowHovered);
 
 private:
+    const float VELOCITY_DECAY = 0.97f;
     const float SENSITIVITY = 75.0f;
     const glm::vec3 UP = glm::vec3(0.0f, 1.0f, 0.0f);
 
     glm::vec3 _orientation = glm::vec3(0.0f, 0.0f, -1.0f);
     glm::vec3 _position = glm::vec3(0.0f, 0.0f, 2.0f);
+    glm::vec3 _velocity = glm::vec3(0.0f, 0.0f, 0.0f);
     bool _isMouseLocked = false;
 
     void MouseMovement(int width, int height, GLFWwindow *window);

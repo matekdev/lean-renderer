@@ -1,5 +1,7 @@
 #include "window.hpp"
 
+#include "game.hpp"
+
 Window::Window(int width, int height, const std::string &windowTitle) : _width(width), _height(height)
 {
     glfwInit();
@@ -33,6 +35,8 @@ void Window::Run()
 {
     while (!glfwWindowShouldClose(_glfwWindow))
     {
+        Game::CalculateDeltaTime();
+
         _glContext->PreRender();
         _uiContext->PreRender();
 

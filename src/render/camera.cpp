@@ -1,8 +1,9 @@
 #include "camera.hpp"
 
-#include <GLFW/glfw3.h>
-
+#include "game.hpp"
 #include "log.hpp"
+
+#include <GLFW/glfw3.h>
 
 Camera::Camera()
 {
@@ -10,6 +11,9 @@ Camera::Camera()
 
 void Camera::Update(int width, int height, Shader &shader)
 {
+    _velocity *= VELOCITY_DECAY;
+    _position += _velocity * Game::DeltaTime;
+
     glm::mat4 viewMatrix = glm::mat4(1.0f);
     glm::mat4 projectionMatrix = glm::mat4(1.0f);
 
@@ -65,11 +69,11 @@ void Camera::KeyboardMovement(GLFWwindow *window)
         movementSpeed *= 4;
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        _position += movementSpeed * _orientation;
+        _velocity += movementSpeed * _orientation;
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        _position += movementSpeed * -glm::normalize(glm::cross(_orientation, UP));
+        _velocity += movementSpeed * -glm::normalize(glm::cross(_orientation, UP));
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        _position += movementSpeed * -_orientation;
+        _velocity += movementSpeed * -_orientation;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        _position += movementSpeed * glm::normalize(glm::cross(_orientation, UP));
+        _velocity += movementSpeed * glm::normalize(glm::cross(_orientation, UP));
 }
