@@ -28,7 +28,7 @@ void ScenePanel::Render(GLFWwindow *window)
     if (panelSize.x != _width || panelSize.y != _height)
         Resize(panelSize.x, panelSize.y);
 
-    _camera.Input(window, ImGui::IsWindowHovered());
+    _camera.Input(panelSize.x, panelSize.y, window, ImGui::IsWindowHovered());
     _camera.Update(panelSize.x, panelSize.y, _shader);
 
     uint64_t textureId = _frameBuffer.GetTextureId();

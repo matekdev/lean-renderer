@@ -2,6 +2,8 @@
 
 #include <GLFW/glfw3.h>
 
+#include "log.hpp"
+
 Camera::Camera()
 {
 }
@@ -17,7 +19,7 @@ void Camera::Update(int width, int height, Shader &shader)
     shader.SetMat4(projectionMatrix * viewMatrix, "cameraMatrix");
 }
 
-void Camera::Input(GLFWwindow *window, bool isWindowHovered)
+void Camera::Input(int width, int height, GLFWwindow *window, bool isWindowHovered)
 {
     // If right click is down and we are hovering the scene panel, we want to lock the cursor to the window.
     auto isRightClickDown = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS;
@@ -33,4 +35,41 @@ void Camera::Input(GLFWwindow *window, bool isWindowHovered)
 
     if (!_isMouseLocked)
         return;
+
+    MouseMovement(width, height, window);
+    KeyboardMovement(window);
+}
+
+void Camera::MouseMovement(int width, int height, GLFWwindow *window)
+{
+    double mouseX, mouseY;
+    glfwGetCursorPos(window, &mouseX, &mouseY);
+    glfwSetCursorPos(window, (width / 2), (height / 2));
+
+    float rotationX = SENSITIVITY * (float)(mouseY - (height / 2)) / height;
+    float rotationY = SENSITIVITY * (float)(mouseX - (width / 2)) / width;
+
+    glm::vec3 newOrientation = glm::rotate(_orientation, glm::radians(-rotationX), glm::normalize(glm::cross(_orientation, UP)));
+
+    if (abs(glm::angle(newOrientation, UP) - glm::radians(90.0f)) <= glm::radians(85.0f))
+        _orientation = newOrientation;
+
+    _orientation = glm::rotate(_orientation, glm::radians(-rotationY), UP);
+}
+
+void Camera::KeyboardMovement(GLFWwindow *window)
+{
+    auto movementSpeed = 0.2f;
+
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
+        movementSpeed *= 4;
+
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+        _position += movementSpeed * _orientation;
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+        _position += movementSpeed * -glm::normalize(glm::cross(_orientation, UP));
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+        _position += movementSpeed * -_orientation;
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+        _position += movementSpeed * glm::normalize(glm::cross(_orientation, UP));
 }
