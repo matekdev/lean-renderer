@@ -31,5 +31,5 @@ void Model::Draw(Shader &shader)
 {
     glUseProgram(shader.GetId());
     glBindVertexArray(_vao);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
 }

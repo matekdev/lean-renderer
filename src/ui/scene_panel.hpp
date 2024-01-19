@@ -5,6 +5,8 @@
 #include "render/shader.hpp"
 #include "render/camera.hpp"
 
+#include <vector>
+
 class ScenePanel
 {
 public:
@@ -13,6 +15,8 @@ public:
     void Render(GLFWwindow *window);
     void Resize(int width, int height);
 
+    std::vector<Model> &GetModels();
+
 private:
     int _width;
     int _height;
@@ -20,4 +24,5 @@ private:
     Camera _camera;
     Model _model;
     Shader _shader;
+    std::vector<Model> _models;
 };

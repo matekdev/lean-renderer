@@ -17,8 +17,6 @@ ConsolePanel::ConsolePanel()
 
 void ConsolePanel::Render()
 {
-    ImGui::ShowDemoWindow();
-
     ImGui::Begin("Console");
 
     const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();

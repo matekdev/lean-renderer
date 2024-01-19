@@ -7,18 +7,25 @@
 
 #include "log.hpp"
 
-ScenePanel::ScenePanel() : _frameBuffer(FrameBuffer()), _camera(Camera()), _model(Model()), _shader(Shader("shaders/vs.vert", "shaders/fs.frag"))
+ScenePanel::ScenePanel() : _frameBuffer(FrameBuffer()), _camera(Camera()), _shader(Shader("shaders/vs.vert", "shaders/fs.frag"))
 {
+    _models = {};
+    _models.push_back(Model());
 }
 
 void ScenePanel::Render(GLFWwindow *window)
 {
+    ImGui::ShowDemoWindow();
+
     _frameBuffer.Bind();
 
     glClearColor(0.31f, 0.41f, 0.46f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    _model.Draw(_shader);
+    for (auto &model : _models)
+    {
+        model.Draw(_shader);
+    }
 
     _frameBuffer.Unbind();
 
@@ -42,4 +49,9 @@ void ScenePanel::Resize(int width, int height)
     _width = width;
     _height = height;
     _frameBuffer.CreateBuffer(width, height);
+}
+
+std::vector<Model> &ScenePanel::GetModels()
+{
+    return _models;
 }
