@@ -5,6 +5,8 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
+#include <GLFW/glfw3.h>
+
 #include "log.hpp"
 
 ScenePanel::ScenePanel() : _frameBuffer(FrameBuffer()), _camera(Camera()), _shader(Shader("shaders/vs.vert", "shaders/fs.frag"))
@@ -43,6 +45,23 @@ void ScenePanel::Render(GLFWwindow *window)
     ImGui::Image(reinterpret_cast<void *>(textureId), ImVec2{(float)_width, (float)_height}, ImVec2{0, 1}, ImVec2{1, 0});
 
     ImGui::End();
+}
+
+void ScenePanel::Input(GLFWwindow *window)
+{
+    if (glfwGetKey(window, GLFW_KEY_DELETE) == GLFW_PRESS)
+    {
+        if (_selectedModel)
+        {
+            _models.erase(std::remove_if(
+                              _models.begin(),
+                              _models.end(),
+                              [&](const Model &m)
+                              { return _selectedModel == &m; }),
+                          _models.end());
+            _selectedModel = nullptr;
+        }
+    }
 }
 
 void ScenePanel::Resize(int width, int height)

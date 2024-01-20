@@ -13,6 +13,7 @@ public:
     ScenePanel();
 
     void Render(GLFWwindow *window);
+    void Input(GLFWwindow *window);
     void Resize(int width, int height);
 
     std::vector<Model> &GetModels();

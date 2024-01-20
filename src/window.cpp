@@ -46,6 +46,7 @@ void Window::Run()
         auto &selectedModel = _scenePanel->GetSelectedModel();
 
         _scenePanel->Render(GetNativeWindow());
+        _scenePanel->Input(GetNativeWindow());
         _consolePanel->Render();
         _objectsPanel->Render(models, selectedModel);
         _inspectorPanel->Render(selectedModel);
