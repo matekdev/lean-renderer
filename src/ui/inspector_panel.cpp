@@ -20,16 +20,13 @@ void InspectorPanel::Render(Model *&selectedModel)
 
     if (selectedModel)
     {
+        ImGui::InputText("name", &selectedModel->Name);
+
         auto floatMin = std::numeric_limits<float>::min();
         auto floatMax = -std::numeric_limits<float>::max();
 
-        auto position = selectedModel->GetPosition();
-        ImGui::DragFloat3("position", glm::value_ptr(position), 0.5f, floatMin, floatMax);
-        selectedModel->SetPosition(position);
-
-        auto rotation = selectedModel->GetRotation();
-        ImGui::DragFloat3("rotation", glm::value_ptr(rotation), 0.5f, -180.0f, 180.0f);
-        selectedModel->SetRotation(rotation);
+        ImGui::DragFloat3("position", glm::value_ptr(selectedModel->Position), 0.5f, floatMin, floatMax);
+        ImGui::DragFloat3("rotation", glm::value_ptr(selectedModel->Rotation), 0.5f, -180.0f, 180.0f);
     }
 
     ImGui::End();

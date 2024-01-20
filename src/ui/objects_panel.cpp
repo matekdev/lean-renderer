@@ -17,12 +17,11 @@ void ObjectsPanel::Render(std::vector<Model> &models, Model *&selectedModel)
 {
     ImGui::Begin("Objects");
 
-    for (int i = 0; i < models.size(); i++)
+    for (auto &model : models)
     {
-        std::string name = "model " + std::to_string(i);
-        if (ImGui::Selectable(name.c_str(), selectedModel == &models[i]))
+        if (ImGui::Selectable(model.Name.length() == 0 ? "<empty>" : model.Name.c_str(), selectedModel == &model))
         {
-            selectedModel = &models[i];
+            selectedModel = &model;
         }
     }
 

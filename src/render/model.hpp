@@ -2,6 +2,7 @@
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
+#include <string>
 
 class Shader;
 
@@ -10,16 +11,15 @@ class Model
 public:
     Model();
 
-    glm::vec3 GetPosition();
-    glm::vec3 GetRotation();
+    std::string Name;
+    glm::vec3 Position = glm::vec3(0.0f);
+    glm::vec3 Rotation = glm::vec3(0.0f); // pitch, yaw, roll?
 
     void Draw(Shader &shader);
-    void SetPosition(const glm::vec3 &pos);
-    void SetRotation(const glm::vec3 &rot);
 
 private:
+    inline static int _id;
+
     GLuint _vao;
     GLuint _vbo;
-    glm::vec3 _position = glm::vec3(0.0f);
-    glm::vec3 _rotation = glm::vec3(0.0f); // pitch, yaw, roll
 };
