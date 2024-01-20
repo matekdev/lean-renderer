@@ -64,6 +64,7 @@ void Model::Draw(Shader &shader)
     model = glm::rotate(model, glm::radians(Rotation.x), glm::vec3(1, 0, 0));
     model = glm::rotate(model, glm::radians(Rotation.y), glm::vec3(0, 1, 0));
     model = glm::rotate(model, glm::radians(Rotation.z), glm::vec3(0, 0, 1));
+    model = glm::scale(model, Scale);
 
     shader.SetMat4(model, "model");
     glUseProgram(shader.GetId());

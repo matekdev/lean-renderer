@@ -14,6 +14,7 @@ public:
     std::string Name;
     glm::vec3 Position = glm::vec3(0.0f);
     glm::vec3 Rotation = glm::vec3(0.0f); // pitch, yaw, roll?
+    glm::vec3 Scale = glm::vec3(1.0f);
 
     void Draw(Shader &shader);
 

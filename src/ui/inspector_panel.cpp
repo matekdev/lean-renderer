@@ -27,6 +27,7 @@ void InspectorPanel::Render(Model *&selectedModel)
 
         ImGui::DragFloat3("position", glm::value_ptr(selectedModel->Position), 0.5f, floatMin, floatMax);
         ImGui::DragFloat3("rotation", glm::value_ptr(selectedModel->Rotation), 0.5f, -180.0f, 180.0f);
+        ImGui::DragFloat3("scale", glm::value_ptr(selectedModel->Scale), 0.25f, 0.0f, floatMax);
     }
 
     ImGui::End();
