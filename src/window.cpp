@@ -24,6 +24,7 @@ Window::Window(int width, int height, const std::string &windowTitle) : _width(w
     _scenePanel = std::make_unique<ScenePanel>();
     _consolePanel = std::make_unique<ConsolePanel>();
     _objectsPanel = std::make_unique<ObjectsPanel>();
+    _inspectorPanel = std::make_unique<InspectorPanel>();
 }
 
 Window::~Window()
@@ -41,11 +42,13 @@ void Window::Run()
         _glContext->PreRender();
         _uiContext->PreRender();
 
-        auto models = _scenePanel->GetModels();
+        auto &models = _scenePanel->GetModels();
+        auto &selectedModel = _scenePanel->GetSelectedModel();
 
         _scenePanel->Render(GetNativeWindow());
         _consolePanel->Render();
-        _objectsPanel->Render(models);
+        _objectsPanel->Render(models, selectedModel);
+        _inspectorPanel->Render(selectedModel);
 
         _uiContext->PostRender();
         _glContext->PostRender();

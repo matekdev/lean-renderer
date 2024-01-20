@@ -55,3 +55,8 @@ std::vector<Model> &ScenePanel::GetModels()
 {
     return _models;
 }
+
+Model *&ScenePanel::GetSelectedModel()
+{
+    return _selectedModel;
+}

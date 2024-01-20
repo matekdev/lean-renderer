@@ -6,6 +6,7 @@
 #include "ui/scene_panel.hpp"
 #include "ui/console_panel.hpp"
 #include "ui/objects_panel.hpp"
+#include "ui/inspector_panel.hpp"
 
 #include <iostream>
 #include <memory>
@@ -32,6 +33,7 @@ private:
     std::unique_ptr<ScenePanel> _scenePanel;
     std::unique_ptr<ConsolePanel> _consolePanel;
     std::unique_ptr<ObjectsPanel> _objectsPanel;
+    std::unique_ptr<InspectorPanel> _inspectorPanel;
 
     int _width;
     int _height;
