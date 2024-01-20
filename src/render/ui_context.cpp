@@ -45,6 +45,7 @@ UIContext::UIContext(Window *window)
     colors[ImGuiCol_TitleBgCollapsed] = ImVec4{0.15f, 0.15f, 0.15f, 1.0f};
 
     ImGuiStyle &style = ImGui::GetStyle();
+    style.WindowMinSize = ImVec2(100, 100);
     if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
     {
         style.WindowRounding = 0.0f;

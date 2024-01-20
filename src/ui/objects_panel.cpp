@@ -7,7 +7,7 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
-#include "log.hpp"
+#include <string>
 
 ObjectsPanel::ObjectsPanel()
 {
@@ -17,10 +17,10 @@ void ObjectsPanel::Render(std::vector<Model> &models, Model *&selectedModel)
 {
     ImGui::Begin("Objects");
 
-    static int selected = -1;
     for (int i = 0; i < models.size(); i++)
     {
-        if (ImGui::Selectable("cube", selectedModel == &models[i]))
+        std::string name = "model " + std::to_string(i);
+        if (ImGui::Selectable(name.c_str(), selectedModel == &models[i]))
         {
             selectedModel = &models[i];
         }

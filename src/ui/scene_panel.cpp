@@ -11,6 +11,7 @@ ScenePanel::ScenePanel() : _frameBuffer(FrameBuffer()), _camera(Camera()), _shad
 {
     _models = {};
     _models.push_back(Model());
+    _models.push_back(Model());
 }
 
 void ScenePanel::Render(GLFWwindow *window)
