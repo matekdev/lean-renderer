@@ -7,6 +7,7 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
+#include <glm/gtc/type_ptr.hpp>
 #include <limits>
 
 InspectorPanel::InspectorPanel()
@@ -21,11 +22,14 @@ void InspectorPanel::Render(Model *&selectedModel)
     {
         auto floatMin = std::numeric_limits<float>::min();
         auto floatMax = -std::numeric_limits<float>::max();
+
         auto position = selectedModel->GetPosition();
-        ImGui::DragScalar("x", ImGuiDataType_Float, &position.x, 0.005f, &floatMin, &floatMax, "%f");
-        ImGui::DragScalar("y", ImGuiDataType_Float, &position.y, 0.005f, &floatMin, &floatMax, "%f");
-        ImGui::DragScalar("z", ImGuiDataType_Float, &position.z, 0.005f, &floatMin, &floatMax, "%f");
+        ImGui::DragFloat3("position", glm::value_ptr(position), 0.5f, floatMin, floatMax);
         selectedModel->SetPosition(position);
+
+        auto rotation = selectedModel->GetRotation();
+        ImGui::DragFloat3("rotation", glm::value_ptr(rotation), 0.5f, -180.0f, 180.0f);
+        selectedModel->SetRotation(rotation);
     }
 
     ImGui::End();

@@ -55,9 +55,25 @@ Model::Model()
     glBindVertexArray(0);
 }
 
+glm::vec3 Model::GetPosition()
+{
+    return _position;
+}
+
+glm::vec3 Model::GetRotation()
+{
+    return _rotation;
+}
+
 void Model::Draw(Shader &shader)
 {
-    shader.SetMat4(glm::translate(glm::mat4(1.0f), _position), "model");
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(glm::mat4(1.0f), _position);
+    model = glm::rotate(model, glm::radians(_rotation.x), glm::vec3(1, 0, 0));
+    model = glm::rotate(model, glm::radians(_rotation.y), glm::vec3(0, 1, 0));
+    model = glm::rotate(model, glm::radians(_rotation.z), glm::vec3(0, 0, 1));
+
+    shader.SetMat4(model, "model");
     glUseProgram(shader.GetId());
     glBindVertexArray(_vao);
     glDrawArrays(GL_TRIANGLES, 0, 36);
@@ -68,7 +84,7 @@ void Model::SetPosition(const glm::vec3 &pos)
     _position = pos;
 }
 
-glm::vec3 Model::GetPosition()
+void Model::SetRotation(const glm::vec3 &rot)
 {
-    return _position;
+    _rotation = rot;
 }
