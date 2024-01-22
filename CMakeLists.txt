@@ -59,4 +59,11 @@ add_custom_target(copy_shaders ALL
         ${PROJECT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/shaders
         COMMENT "Copying shaders into binary directory")
 
-add_dependencies(${PROJECT_NAME} copy_shaders)
+# Copy model/texture files
+add_custom_target(copy_models ALL
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${PROJECT_SOURCE_DIR}/models
+        ${PROJECT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/models
+        COMMENT "Copying models/textures into binary directory")
+
+add_dependencies(${PROJECT_NAME} copy_shaders copy_models)

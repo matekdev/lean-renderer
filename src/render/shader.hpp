@@ -12,6 +12,7 @@ public:
     Shader(const std::string &vertexShaderPath, const std::string &fragmentShaderPath);
 
     GLuint GetId();
+    void SetInt(int i, const std::string &name);
     void SetMat4(const glm::mat4 &mat4, const std::string &name);
 
 private:
