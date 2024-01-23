@@ -1,6 +1,6 @@
 #include "inspector_panel.hpp"
 
-#include "render/model.hpp"
+#include "render/game_object/game_object.hpp"
 
 #include "imgui.h"
 #include "imgui_stdlib.h"
@@ -14,7 +14,7 @@ InspectorPanel::InspectorPanel()
 {
 }
 
-void InspectorPanel::Render(Model *&selectedModel)
+void InspectorPanel::Render(GameObject *&selectedModel)
 {
     ImGui::Begin("Inspector");
 

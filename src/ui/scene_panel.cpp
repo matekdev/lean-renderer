@@ -12,7 +12,7 @@
 ScenePanel::ScenePanel() : _frameBuffer(FrameBuffer()), _camera(Camera()), _shader(Shader("shaders/vs.vert", "shaders/fs.frag"))
 {
     _models = {};
-    _models.push_back(Model());
+    _models.push_back(GameObject("models/backpack.obj"));
 }
 
 void ScenePanel::Render(GLFWwindow *window)
@@ -26,7 +26,7 @@ void ScenePanel::Render(GLFWwindow *window)
 
     for (auto &model : _models)
     {
-        model.Draw(_shader);
+        model.Render(_shader);
     }
 
     _frameBuffer.Unbind();
@@ -55,7 +55,7 @@ void ScenePanel::Input(GLFWwindow *window)
             _models.erase(std::remove_if(
                               _models.begin(),
                               _models.end(),
-                              [&](const Model &m)
+                              [&](const GameObject &m)
                               { return _selectedModel == &m; }),
                           _models.end());
             _selectedModel = nullptr;
@@ -70,12 +70,12 @@ void ScenePanel::Resize(int width, int height)
     _frameBuffer.CreateBuffer(width, height);
 }
 
-std::vector<Model> &ScenePanel::GetModels()
+std::vector<GameObject> &ScenePanel::GetModels()
 {
     return _models;
 }
 
-Model *&ScenePanel::GetSelectedModel()
+GameObject *&ScenePanel::GetSelectedModel()
 {
     return _selectedModel;
 }

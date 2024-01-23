@@ -2,12 +2,12 @@
 
 #include <vector>
 
-class Model;
+class GameObject;
 
 class ObjectsPanel
 {
 public:
     ObjectsPanel();
 
-    void Render(std::vector<Model> &models, Model *&selectedModel);
+    void Render(std::vector<GameObject> &models, GameObject *&selectedModel);
 };

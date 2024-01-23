@@ -1,6 +1,6 @@
 #include "objects_panel.hpp"
 
-#include "render/model.hpp"
+#include "render/game_object/game_object.hpp"
 
 #include "imgui.h"
 #include "imgui_stdlib.h"
@@ -13,7 +13,7 @@ ObjectsPanel::ObjectsPanel()
 {
 }
 
-void ObjectsPanel::Render(std::vector<Model> &models, Model *&selectedModel)
+void ObjectsPanel::Render(std::vector<GameObject> &models, GameObject *&selectedModel)
 {
     ImGui::Begin("Objects");
 
