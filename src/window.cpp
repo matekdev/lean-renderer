@@ -17,6 +17,7 @@ Window::Window(int width, int height, const std::string &windowTitle) : _width(w
     glfwSetWindowUserPointer(_glfwWindow, this);
     glfwMakeContextCurrent(_glfwWindow);
     gladLoadGL();
+    glEnable(GL_DEPTH_TEST);
 
     _glContext = std::make_unique<OpenGLContext>(this);
     _uiContext = std::make_unique<UIContext>(this);

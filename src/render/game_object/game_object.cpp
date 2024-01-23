@@ -15,7 +15,7 @@ GameObject::GameObject(const std::string &filePath)
         LOG(ERROR) << "ERROR::ASSIMP:: " << import.GetErrorString();
         return;
     }
-    _directory = filePath.substr(0, _directory.find_last_of('/'));
+    _directory = filePath.substr(0, filePath.find_last_of('/'));
 
     ProcessNode(scene->mRootNode, scene);
 }
