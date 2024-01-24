@@ -1,9 +1,6 @@
 #include "game_object.hpp"
-#include "log.hpp"
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
 
-unsigned int TextureFromFile(const char *path, const std::string &directory, bool gamma = false);
+#include "log.hpp"
 
 GameObject::GameObject(const std::string &filePath)
 {
@@ -15,6 +12,8 @@ GameObject::GameObject(const std::string &filePath)
         LOG(ERROR) << "ERROR::ASSIMP:: " << import.GetErrorString();
         return;
     }
+
+    Name = filePath.substr(filePath.find_last_of("/\\") + 1);
     _directory = filePath.substr(0, filePath.find_last_of('/'));
 
     ProcessNode(scene->mRootNode, scene);
@@ -40,14 +39,13 @@ void GameObject::Render(Shader &shader)
 
 void GameObject::ProcessNode(aiNode *node, const aiScene *scene)
 {
-    // process all the node's meshes (if any)
-    for (unsigned int i = 0; i < node->mNumMeshes; i++)
+    for (int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh *mesh = scene->mMeshes[node->mMeshes[i]];
         _meshes.push_back(ProcessMesh(mesh, scene));
     }
-    // then do the same for each of its children
-    for (unsigned int i = 0; i < node->mNumChildren; i++)
+
+    for (int i = 0; i < node->mNumChildren; i++)
     {
         ProcessNode(node->mChildren[i], scene);
     }
@@ -55,22 +53,19 @@ void GameObject::ProcessNode(aiNode *node, const aiScene *scene)
 
 Mesh GameObject::ProcessMesh(aiMesh *mesh, const aiScene *scene)
 {
-    // data to fill
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
     std::vector<Texture> textures;
 
-    // walk through each of the mesh's vertices
     for (unsigned int i = 0; i < mesh->mNumVertices; i++)
     {
         Vertex vertex;
-        glm::vec3 vector; // we declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
-        // positions
+        glm::vec3 vector;
         vector.x = mesh->mVertices[i].x;
         vector.y = mesh->mVertices[i].y;
         vector.z = mesh->mVertices[i].z;
         vertex.Position = vector;
-        // normals
+
         if (mesh->HasNormals())
         {
             vector.x = mesh->mNormals[i].x;
@@ -78,7 +73,7 @@ Mesh GameObject::ProcessMesh(aiMesh *mesh, const aiScene *scene)
             vector.z = mesh->mNormals[i].z;
             vertex.Normal = vector;
         }
-        // texture coordinates
+
         if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
         {
             glm::vec2 vec;
@@ -89,19 +84,22 @@ Mesh GameObject::ProcessMesh(aiMesh *mesh, const aiScene *scene)
             vertex.TexCoords = vec;
         }
         else
+        {
             vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+        }
 
         vertices.push_back(vertex);
     }
-    // now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
-    for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+
+    for (int i = 0; i < mesh->mNumFaces; i++)
     {
         aiFace face = mesh->mFaces[i];
-        // retrieve all indices of the face and store them in the indices vector
         for (unsigned int j = 0; j < face.mNumIndices; j++)
+        {
             indices.push_back(face.mIndices[j]);
+        }
     }
-    // process materials
+
     aiMaterial *material = scene->mMaterials[mesh->mMaterialIndex];
     // we assume a convention for sampler names in the shaders. Each diffuse texture should be named
     // as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER.
@@ -130,71 +128,31 @@ Mesh GameObject::ProcessMesh(aiMesh *mesh, const aiScene *scene)
 std::vector<Texture> GameObject::LoadMaterialTextures(aiMaterial *material, aiTextureType type, std::string typeName)
 {
     std::vector<Texture> textures;
-    for (unsigned int i = 0; i < material->GetTextureCount(type); i++)
+    for (int i = 0; i < material->GetTextureCount(type); i++)
     {
         aiString str;
         material->GetTexture(type, i, &str);
-        // check if texture was loaded before and if so, continue to next iteration: skip loading a new texture
-        bool skip = false;
+        bool skipLoading = false;
         for (unsigned int j = 0; j < _texturesLoaded.size(); j++)
         {
             if (std::strcmp(_texturesLoaded[j].Path.data(), str.C_Str()) == 0)
             {
                 textures.push_back(_texturesLoaded[j]);
-                skip = true; // a texture with the same filepath has already been loaded, continue to next one. (optimization)
+                skipLoading = true;
                 break;
             }
         }
-        if (!skip)
-        { // if texture hasn't been loaded already, load it
+
+        if (!skipLoading)
+        {
             Texture texture;
             texture.Id = TextureFromFile(str.C_Str(), _directory);
             texture.Type = typeName;
             texture.Path = str.C_Str();
             textures.push_back(texture);
-            _texturesLoaded.push_back(texture); // store it as texture loaded for entire model, to ensure we won't unnecessary load duplicate textures.
+            _texturesLoaded.push_back(texture);
         }
     }
+
     return textures;
-}
-
-unsigned int TextureFromFile(const char *path, const std::string &directory, bool gamma)
-{
-    std::string filename = std::string(path);
-    filename = directory + '/' + filename;
-    stbi_set_flip_vertically_on_load(true);
-
-    unsigned int textureID;
-    glGenTextures(1, &textureID);
-
-    int width, height, nrComponents;
-    unsigned char *data = stbi_load(filename.c_str(), &width, &height, &nrComponents, 0);
-    if (data)
-    {
-        GLenum format;
-        if (nrComponents == 1)
-            format = GL_RED;
-        else if (nrComponents == 3)
-            format = GL_RGB;
-        else if (nrComponents == 4)
-            format = GL_RGBA;
-
-        glBindTexture(GL_TEXTURE_2D, textureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-        stbi_image_free(data);
-    }
-    else
-    {
-        LOG(ERROR) << "Texture failed to load at path: " << path << std::endl;
-        stbi_image_free(data);
-    }
-
-    return textureID;
 }
