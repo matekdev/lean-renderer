@@ -15,22 +15,22 @@ InspectorPanel::InspectorPanel()
 {
 }
 
-void InspectorPanel::Render(GameObject *&selectedModel)
+void InspectorPanel::Render(GameObject *&selectedGameObject)
 {
     ImGui::Begin("Inspector");
 
-    if (selectedModel)
+    if (selectedGameObject)
     {
-        ImGui::InputText("name", &selectedModel->Name);
+        ImGui::InputText("name", &selectedGameObject->Name);
 
         auto floatMin = std::numeric_limits<float>::min();
         auto floatMax = -std::numeric_limits<float>::max();
 
-        ImGui::DragFloat3("position", glm::value_ptr(selectedModel->Position), 0.5f, floatMin, floatMax);
-        ImGui::DragFloat3("rotation", glm::value_ptr(selectedModel->Rotation), 0.5f, -180.0f, 180.0f);
-        ImGui::DragFloat3("scale", glm::value_ptr(selectedModel->Scale), 0.25f, 0.0f, floatMax);
+        ImGui::DragFloat3("position", glm::value_ptr(selectedGameObject->Position), 0.5f, floatMin, floatMax);
+        ImGui::DragFloat3("rotation", glm::value_ptr(selectedGameObject->Rotation), 0.5f, -180.0f, 180.0f);
+        ImGui::DragFloat3("scale", glm::value_ptr(selectedGameObject->Scale), 0.25f, 0.0f, floatMax);
 
-        DrawVec3Control("position", selectedModel->Position, 0.0f, 100.0f);
+        DrawVec3Control("position", selectedGameObject->Position, 0.0f, 100.0f);
     }
 
     ImGui::End();

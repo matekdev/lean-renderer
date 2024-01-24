@@ -11,8 +11,8 @@
 
 ScenePanel::ScenePanel() : _frameBuffer(FrameBuffer()), _camera(Camera()), _shader(Shader("shaders/vs.vert", "shaders/fs.frag"))
 {
-    _models = {};
-    _models.push_back(GameObject("models/hamster/hamster.obj"));
+    _gameObjects = {};
+    _gameObjects.push_back(GameObject("models/hamster/hamster.obj"));
 }
 
 void ScenePanel::Render(GLFWwindow *window)
@@ -24,9 +24,9 @@ void ScenePanel::Render(GLFWwindow *window)
     glClearColor(0.31f, 0.41f, 0.46f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    for (auto &model : _models)
+    for (auto &gameObject : _gameObjects)
     {
-        model.Render(_shader);
+        gameObject.Render(_shader);
     }
 
     _frameBuffer.Unbind();
@@ -50,15 +50,15 @@ void ScenePanel::Input(GLFWwindow *window)
 {
     if (glfwGetKey(window, GLFW_KEY_DELETE) == GLFW_PRESS)
     {
-        if (_selectedModel)
+        if (_selectedGameObject)
         {
-            _models.erase(std::remove_if(
-                              _models.begin(),
-                              _models.end(),
-                              [&](const GameObject &m)
-                              { return _selectedModel == &m; }),
-                          _models.end());
-            _selectedModel = nullptr;
+            _gameObjects.erase(std::remove_if(
+                                   _gameObjects.begin(),
+                                   _gameObjects.end(),
+                                   [&](const GameObject &m)
+                                   { return _selectedGameObject == &m; }),
+                               _gameObjects.end());
+            _selectedGameObject = nullptr;
         }
     }
 }
@@ -70,12 +70,12 @@ void ScenePanel::Resize(int width, int height)
     _frameBuffer.CreateBuffer(width, height);
 }
 
-std::vector<GameObject> &ScenePanel::GetModels()
+std::vector<GameObject> &ScenePanel::GetGameObjects()
 {
-    return _models;
+    return _gameObjects;
 }
 
-GameObject *&ScenePanel::GetSelectedModel()
+GameObject *&ScenePanel::GetSelectedGameObject()
 {
-    return _selectedModel;
+    return _selectedGameObject;
 }

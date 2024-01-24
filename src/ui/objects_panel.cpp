@@ -13,15 +13,15 @@ ObjectsPanel::ObjectsPanel()
 {
 }
 
-void ObjectsPanel::Render(std::vector<GameObject> &models, GameObject *&selectedModel)
+void ObjectsPanel::Render(std::vector<GameObject> &gameObjects, GameObject *&selectedGameObject)
 {
     ImGui::Begin("Objects");
 
-    for (auto &model : models)
+    for (auto &gameObject : gameObjects)
     {
-        if (ImGui::Selectable(model.Name.length() == 0 ? "<empty>" : model.Name.c_str(), selectedModel == &model))
+        if (ImGui::Selectable(gameObject.Name.length() == 0 ? "<empty>" : gameObject.Name.c_str(), selectedGameObject == &gameObject))
         {
-            selectedModel = &model;
+            selectedGameObject = &gameObject;
         }
     }
 

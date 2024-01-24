@@ -7,5 +7,5 @@ class InspectorPanel
 public:
     InspectorPanel();
 
-    void Render(GameObject *&selectedModel);
+    void Render(GameObject *&selectedGameObject);
 };

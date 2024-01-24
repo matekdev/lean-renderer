@@ -16,8 +16,8 @@ public:
     void Input(GLFWwindow *window);
     void Resize(int width, int height);
 
-    std::vector<GameObject> &GetModels();
-    GameObject *&GetSelectedModel();
+    std::vector<GameObject> &GetGameObjects();
+    GameObject *&GetSelectedGameObject();
 
 private:
     int _width;
@@ -26,6 +26,6 @@ private:
     Camera _camera;
     Shader _shader;
 
-    GameObject *_selectedModel = nullptr;
-    std::vector<GameObject> _models;
+    GameObject *_selectedGameObject = nullptr;
+    std::vector<GameObject> _gameObjects;
 };

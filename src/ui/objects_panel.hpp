@@ -9,5 +9,5 @@ class ObjectsPanel
 public:
     ObjectsPanel();
 
-    void Render(std::vector<GameObject> &models, GameObject *&selectedModel);
+    void Render(std::vector<GameObject> &gameObjects, GameObject *&selectedGameObject);
 };
