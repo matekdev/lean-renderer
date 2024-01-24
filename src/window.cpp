@@ -17,6 +17,7 @@ Window::Window(int width, int height, const std::string &windowTitle) : _width(w
     glfwSetWindowUserPointer(_glfwWindow, this);
     glfwMakeContextCurrent(_glfwWindow);
     gladLoadGL();
+    glEnable(GL_DEPTH_TEST);
 
     _glContext = std::make_unique<OpenGLContext>(this);
     _uiContext = std::make_unique<UIContext>(this);
@@ -42,14 +43,14 @@ void Window::Run()
         _glContext->PreRender();
         _uiContext->PreRender();
 
-        auto &models = _scenePanel->GetModels();
-        auto &selectedModel = _scenePanel->GetSelectedModel();
+        auto &gameObjects = _scenePanel->GetGameObjects();
+        auto &selectedGameObject = _scenePanel->GetSelectedGameObject();
 
         _scenePanel->Render(GetNativeWindow());
         _scenePanel->Input(GetNativeWindow());
         _consolePanel->Render();
-        _objectsPanel->Render(models, selectedModel);
-        _inspectorPanel->Render(selectedModel);
+        _objectsPanel->Render(gameObjects, selectedGameObject);
+        _inspectorPanel->Render(selectedGameObject);
 
         _uiContext->PostRender();
         _glContext->PostRender();

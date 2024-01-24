@@ -1,6 +1,6 @@
 #include "objects_panel.hpp"
 
-#include "render/model.hpp"
+#include "render/game_object/game_object.hpp"
 
 #include "imgui.h"
 #include "imgui_stdlib.h"
@@ -13,15 +13,15 @@ ObjectsPanel::ObjectsPanel()
 {
 }
 
-void ObjectsPanel::Render(std::vector<Model> &models, Model *&selectedModel)
+void ObjectsPanel::Render(std::vector<GameObject> &gameObjects, GameObject *&selectedGameObject)
 {
     ImGui::Begin("Objects");
 
-    for (auto &model : models)
+    for (auto &gameObject : gameObjects)
     {
-        if (ImGui::Selectable(model.Name.length() == 0 ? "<empty>" : model.Name.c_str(), selectedModel == &model))
+        if (ImGui::Selectable(gameObject.Name.c_str(), selectedGameObject == &gameObject))
         {
-            selectedModel = &model;
+            selectedGameObject = &gameObject;
         }
     }
 

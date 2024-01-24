@@ -1,9 +1,9 @@
 #pragma once
 
 #include "render/frame_buffer.hpp"
-#include "render/model.hpp"
 #include "render/shader.hpp"
 #include "render/camera.hpp"
+#include "render/game_object/game_object.hpp"
 
 #include <vector>
 
@@ -16,8 +16,8 @@ public:
     void Input(GLFWwindow *window);
     void Resize(int width, int height);
 
-    std::vector<Model> &GetModels();
-    Model *&GetSelectedModel();
+    std::vector<GameObject> &GetGameObjects();
+    GameObject *&GetSelectedGameObject();
 
 private:
     int _width;
@@ -26,6 +26,6 @@ private:
     Camera _camera;
     Shader _shader;
 
-    Model *_selectedModel = nullptr;
-    std::vector<Model> _models;
+    GameObject *_selectedGameObject = nullptr;
+    std::vector<GameObject> _gameObjects;
 };

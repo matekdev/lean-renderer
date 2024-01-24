@@ -68,6 +68,9 @@ void Camera::KeyboardMovement(GLFWwindow *window)
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
         movementSpeed *= 4;
 
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+        movementSpeed /= 4;
+
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
         _velocity += movementSpeed * _orientation;
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
