@@ -19,7 +19,7 @@ void ObjectsPanel::Render(std::vector<GameObject> &gameObjects, GameObject *&sel
 
     for (auto &gameObject : gameObjects)
     {
-        if (ImGui::Selectable(gameObject.Name.length() == 0 ? "<empty>" : gameObject.Name.c_str(), selectedGameObject == &gameObject))
+        if (ImGui::Selectable(gameObject.Name.c_str(), selectedGameObject == &gameObject))
         {
             selectedGameObject = &gameObject;
         }

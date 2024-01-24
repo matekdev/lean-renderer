@@ -13,7 +13,7 @@ GameObject::GameObject(const std::string &filePath)
         return;
     }
 
-    Name = filePath.substr(filePath.find_last_of("/\\") + 1);
+    Name = filePath.substr(filePath.find_last_of("/\\") + 1) + std::to_string(_id++);
     _directory = filePath.substr(0, filePath.find_last_of('/'));
 
     ProcessNode(scene->mRootNode, scene);

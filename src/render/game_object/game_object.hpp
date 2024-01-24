@@ -19,6 +19,7 @@ public:
     void Render(Shader &shader);
 
 private:
+    inline static int _id;
     std::vector<Mesh> _meshes;
     std::vector<Texture> _texturesLoaded;
     std::string _directory;
