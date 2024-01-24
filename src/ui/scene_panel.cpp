@@ -1,5 +1,7 @@
 #include "scene_panel.hpp"
 
+#include "log.hpp"
+
 #include "imgui.h"
 #include "imgui_stdlib.h"
 #include "imgui_impl_glfw.h"
@@ -7,12 +9,10 @@
 
 #include <GLFW/glfw3.h>
 
-#include "log.hpp"
-
 ScenePanel::ScenePanel() : _frameBuffer(FrameBuffer()), _camera(Camera()), _shader(Shader("shaders/vs.vert", "shaders/fs.frag"))
 {
     _models = {};
-    _models.push_back(GameObject("models/backpack.obj"));
+    _models.push_back(GameObject("models/hamster/hamster.obj"));
 }
 
 void ScenePanel::Render(GLFWwindow *window)
