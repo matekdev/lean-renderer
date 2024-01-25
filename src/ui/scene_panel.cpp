@@ -71,7 +71,7 @@ void ScenePanel::Render(GLFWwindow *window)
         ImGuizmo::SetRect(_viewPortBounds[0].x, _viewPortBounds[0].y, _viewPortBounds[1].x - _viewPortBounds[0].x, _viewPortBounds[1].y - _viewPortBounds[0].y);
 
         glm::mat4 transform = _selectedGameObject->GetTransform();
-        ImGuizmo::Manipulate(glm::value_ptr(_camera.GetViewMatrix()), glm::value_ptr(_camera.GetProjectionMatrix()), _activeGizmo, ImGuizmo::LOCAL, glm::value_ptr(transform), nullptr, nullptr, nullptr, nullptr);
+        ImGuizmo::Manipulate(glm::value_ptr(_camera.GetViewMatrix()), glm::value_ptr(_camera.GetProjectionMatrix()), _activeGizmo, ImGuizmo::WORLD, glm::value_ptr(transform), nullptr, nullptr, nullptr, nullptr);
 
         if (ImGuizmo::IsUsing())
         {
