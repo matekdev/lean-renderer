@@ -19,6 +19,11 @@ glm::mat4 Camera::GetProjectionMatrix()
     return _projectionMatrix;
 }
 
+bool Camera::IsMouseLocked()
+{
+    return _isMouseLocked;
+}
+
 void Camera::Update(float width, float height, Shader &shader)
 {
     _velocity *= VELOCITY_DECAY;

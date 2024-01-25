@@ -16,6 +16,7 @@ public:
 
     glm::mat4 GetViewMatrix();
     glm::mat4 GetProjectionMatrix();
+    bool IsMouseLocked();
 
     void Update(float width, float height, Shader &shader);
     void Input(float width, float height, GLFWwindow *window, bool isWindowHovered);
