@@ -1,6 +1,9 @@
 #include "scene_panel.hpp"
 
 #include "log.hpp"
+#include "ui/components/gizmo.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "imgui.h"
 #include "imgui_stdlib.h"
@@ -39,11 +42,27 @@ void ScenePanel::Render(GLFWwindow *window)
     if (panelSize.x != _width || panelSize.y != _height)
         Resize(panelSize.x, panelSize.y);
 
+    uint64_t textureId = _frameBuffer.GetTextureId();
+    ImGui::Image(reinterpret_cast<void *>(textureId), ImVec2{_width, _height}, ImVec2{0, 1}, ImVec2{1, 0});
+
     _camera.Input(panelSize.x, panelSize.y, window, ImGui::IsWindowHovered());
     _camera.Update(panelSize.x, panelSize.y, _shader);
 
-    uint64_t textureId = _frameBuffer.GetTextureId();
-    ImGui::Image(reinterpret_cast<void *>(textureId), ImVec2{(float)_width, (float)_height}, ImVec2{0, 1}, ImVec2{1, 0});
+    auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
+    auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
+    auto viewportOffset = ImGui::GetWindowPos();
+    _viewPortBounds[0] = {viewportMinRegion.x + viewportOffset.x, viewportMinRegion.y + viewportOffset.y};
+    _viewPortBounds[1] = {viewportMaxRegion.x + viewportOffset.x, viewportMaxRegion.y + viewportOffset.y};
+
+    if (_selectedGameObject != nullptr)
+    {
+        ImGuizmo::SetOrthographic(false);
+        ImGuizmo::SetDrawlist();
+        ImGuizmo::SetRect(_viewPortBounds[0].x, _viewPortBounds[0].y, _viewPortBounds[1].x - _viewPortBounds[0].x, _viewPortBounds[1].y - _viewPortBounds[0].y);
+
+        glm::mat4 transform = _selectedGameObject->GetTransform();
+        ImGuizmo::Manipulate(glm::value_ptr(_camera.GetViewMatrix()), glm::value_ptr(_camera.GetProjectionMatrix()), ImGuizmo::OPERATION::TRANSLATE, ImGuizmo::LOCAL, glm::value_ptr(transform), nullptr, nullptr);
+    }
 
     ImGui::End();
 }
@@ -65,7 +84,7 @@ void ScenePanel::Input(GLFWwindow *window)
     }
 }
 
-void ScenePanel::Resize(int width, int height)
+void ScenePanel::Resize(float width, float height)
 {
     _width = width;
     _height = height;

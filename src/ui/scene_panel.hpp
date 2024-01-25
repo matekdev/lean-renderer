@@ -14,14 +14,15 @@ public:
 
     void Render(GLFWwindow *window);
     void Input(GLFWwindow *window);
-    void Resize(int width, int height);
+    void Resize(float width, float height);
 
     std::vector<GameObject> &GetGameObjects();
     GameObject *&GetSelectedGameObject();
 
 private:
-    int _width;
-    int _height;
+    glm::vec2 _viewPortBounds[2];
+    float _width;
+    float _height;
     FrameBuffer _frameBuffer;
     Camera _camera;
     Shader _shader;

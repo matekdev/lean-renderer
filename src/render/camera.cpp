@@ -9,21 +9,28 @@ Camera::Camera()
 {
 }
 
-void Camera::Update(int width, int height, Shader &shader)
+glm::mat4 Camera::GetViewMatrix()
+{
+    return _viewMatrix;
+}
+
+glm::mat4 Camera::GetProjectionMatrix()
+{
+    return _projectionMatrix;
+}
+
+void Camera::Update(float width, float height, Shader &shader)
 {
     _velocity *= VELOCITY_DECAY;
     _position += _velocity * Game::DeltaTime;
 
-    glm::mat4 viewMatrix = glm::mat4(1.0f);
-    glm::mat4 projectionMatrix = glm::mat4(1.0f);
+    _viewMatrix = glm::lookAt(_position, _position + _orientation, UP);
+    _projectionMatrix = glm::perspective(glm::radians(90.0f), width / height, 0.1f, 100.0f);
 
-    viewMatrix = glm::lookAt(_position, _position + _orientation, UP);
-    projectionMatrix = glm::perspective(glm::radians(90.0f), (float)(width / height), 0.1f, 100.0f);
-
-    shader.SetMat4(projectionMatrix * viewMatrix, "cameraMatrix");
+    shader.SetMat4(_projectionMatrix * _viewMatrix, "cameraMatrix");
 }
 
-void Camera::Input(int width, int height, GLFWwindow *window, bool isWindowHovered)
+void Camera::Input(float width, float height, GLFWwindow *window, bool isWindowHovered)
 {
     // If right click is down and we are hovering the scene panel, we want to lock the cursor to the window.
     auto isRightClickDown = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS;
@@ -44,7 +51,7 @@ void Camera::Input(int width, int height, GLFWwindow *window, bool isWindowHover
     KeyboardMovement(window);
 }
 
-void Camera::MouseMovement(int width, int height, GLFWwindow *window)
+void Camera::MouseMovement(float width, float height, GLFWwindow *window)
 {
     double mouseX, mouseY;
     glfwGetCursorPos(window, &mouseX, &mouseY);

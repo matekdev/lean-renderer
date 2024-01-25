@@ -2,6 +2,10 @@
 
 #include "log.hpp"
 
+#include <glm/gtc/matrix_transform.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/quaternion.hpp>
+
 GameObject::GameObject(const std::string &filePath)
 {
     Assimp::Importer import;
@@ -17,6 +21,12 @@ GameObject::GameObject(const std::string &filePath)
     _directory = filePath.substr(0, filePath.find_last_of('/'));
 
     ProcessNode(scene->mRootNode, scene);
+}
+
+glm::mat4 GameObject::GetTransform()
+{
+    glm::mat4 rotation = glm::toMat4(glm::quat(Rotation));
+    return glm::translate(glm::mat4(1.0f), Position) * rotation * glm::scale(glm::mat4(1.0f), Scale);
 }
 
 void GameObject::Render(Shader &shader)
