@@ -16,8 +16,6 @@ ScenePanel::ScenePanel() : _frameBuffer(FrameBuffer()), _camera(Camera()), _shad
 {
     _gameObjects = {};
     _gameObjects.push_back(GameObject("models/hamster/hamster.obj"));
-    _gameObjects.push_back(GameObject("models/hamster/hamster.obj"));
-    _gameObjects.push_back(GameObject("models/hamster/hamster.obj"));
 }
 
 std::vector<GameObject> &ScenePanel::GetGameObjects()
