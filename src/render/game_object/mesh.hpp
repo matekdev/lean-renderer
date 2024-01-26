@@ -9,6 +9,9 @@
 class Mesh
 {
 public:
+    int IndexCount;
+    int VertexCount;
+
     Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std::vector<Texture> textures);
 
     void Render(Shader &shader);

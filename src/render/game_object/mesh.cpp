@@ -29,6 +29,9 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std:
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+
+    IndexCount = vertices.size();
+    VertexCount = indices.size();
 }
 
 void Mesh::Render(Shader &shader)

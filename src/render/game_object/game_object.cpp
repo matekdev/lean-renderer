@@ -6,6 +6,8 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/quaternion.hpp>
 
+#include <numeric>
+
 GameObject::GameObject(const std::string &filePath)
 {
     Assimp::Importer import;
@@ -21,6 +23,17 @@ GameObject::GameObject(const std::string &filePath)
     _directory = filePath.substr(0, filePath.find_last_of('/'));
 
     ProcessNode(scene->mRootNode, scene);
+    CalculateStats();
+}
+
+int GameObject::GetVertexCount()
+{
+    return _vertexCount;
+}
+
+int GameObject::GetTriangleCount()
+{
+    return _triangleCount;
 }
 
 glm::mat4 GameObject::GetTransform()
@@ -158,4 +171,22 @@ std::vector<Texture> GameObject::LoadMaterialTextures(aiMaterial *material, aiTe
     }
 
     return textures;
+}
+
+void GameObject::CalculateStats()
+{
+    _vertexCount = std::accumulate(
+        _meshes.begin(), _meshes.end(), 0,
+        [](int accumulator, Mesh &mesh)
+        {
+            return accumulator + mesh.VertexCount;
+        });
+
+    _triangleCount = std::accumulate(
+                         _meshes.begin(), _meshes.end(), 0,
+                         [](int accumulator, Mesh &mesh)
+                         {
+                             return accumulator + mesh.IndexCount;
+                         }) /
+                     3;
 }

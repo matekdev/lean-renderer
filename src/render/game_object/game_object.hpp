@@ -16,6 +16,8 @@ public:
 
     GameObject(const std::string &filePath);
 
+    int GetVertexCount();
+    int GetTriangleCount();
     glm::mat4 GetTransform();
     void Render(Shader &shader);
 
@@ -25,7 +27,11 @@ private:
     std::vector<Texture> _texturesLoaded;
     std::string _directory;
 
+    int _vertexCount;
+    int _triangleCount;
+
     void ProcessNode(aiNode *node, const aiScene *scene);
     Mesh ProcessMesh(aiMesh *mesh, const aiScene *scene);
     std::vector<Texture> LoadMaterialTextures(aiMaterial *material, aiTextureType type, std::string typeName);
+    void CalculateStats();
 };
