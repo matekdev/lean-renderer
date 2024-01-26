@@ -46,6 +46,7 @@ void GameObject::Render(Shader &shader)
 {
     for (auto &mesh : _meshes)
     {
+        mesh.SetRenderingMode(RenderingMode);
         mesh.Render(shader);
     }
 

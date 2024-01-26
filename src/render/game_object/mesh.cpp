@@ -34,6 +34,11 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices, std:
     VertexCount = indices.size();
 }
 
+void Mesh::SetRenderingMode(int mode)
+{
+    _renderingMode = mode;
+}
+
 void Mesh::Render(Shader &shader)
 {
     unsigned int diffuseNr = 1;
@@ -56,6 +61,21 @@ void Mesh::Render(Shader &shader)
     glActiveTexture(GL_TEXTURE0);
 
     glBindVertexArray(_vao);
-    glDrawElements(GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, 0);
+    glDrawElements(GetRenderingMode(), _indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
+}
+
+GLenum Mesh::GetRenderingMode()
+{
+    switch (_renderingMode)
+    {
+    case 0:
+        return GL_TRIANGLES;
+    case 1:
+        return GL_LINES;
+    case 2:
+        return GL_POINTS;
+    default:
+        return GL_TRIANGLES;
+    }
 }

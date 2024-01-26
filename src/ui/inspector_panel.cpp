@@ -21,6 +21,14 @@ void InspectorPanel::Render(GameObject *&selectedGameObject)
 
     if (selectedGameObject)
     {
+        if (ImGui::CollapsingHeader("Rendering", ImGuiTreeNodeFlags_DefaultOpen))
+        {
+            const char *renderingModes[] = {"Regular", "Wireframe", "Points"};
+            ImGui::Combo("##label", &selectedGameObject->RenderingMode, renderingModes, IM_ARRAYSIZE(renderingModes), IM_ARRAYSIZE(renderingModes));
+        }
+
+        ImGui::Spacing();
+
         if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
         {
             auto floatMin = std::numeric_limits<float>::min();
