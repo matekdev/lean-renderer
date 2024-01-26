@@ -43,14 +43,12 @@ void Window::Run()
         _glContext->PreRender();
         _uiContext->PreRender();
 
-        auto &gameObjects = _scenePanel->GetGameObjects();
-        auto &selectedGameObject = _scenePanel->GetSelectedGameObject();
-
         _scenePanel->Render(GetNativeWindow());
         _scenePanel->Input(GetNativeWindow());
+
         _consolePanel->Render();
-        _objectsPanel->Render(gameObjects, selectedGameObject);
-        _inspectorPanel->Render(selectedGameObject);
+        _objectsPanel->Render();
+        _inspectorPanel->Render();
 
         _uiContext->PostRender();
         _glContext->PostRender();

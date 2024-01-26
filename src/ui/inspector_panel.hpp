@@ -1,11 +1,9 @@
 #pragma once
 
-class GameObject;
-
 class InspectorPanel
 {
 public:
     InspectorPanel();
 
-    void Render(GameObject *&selectedGameObject);
+    void Render();
 };

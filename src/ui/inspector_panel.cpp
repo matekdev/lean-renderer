@@ -1,6 +1,6 @@
 #include "inspector_panel.hpp"
 
-#include "render/game_object/game_object.hpp"
+#include "game.hpp"
 #include "components/vec3_control.hpp"
 
 #include "imgui.h"
@@ -15,16 +15,16 @@ InspectorPanel::InspectorPanel()
 {
 }
 
-void InspectorPanel::Render(GameObject *&selectedGameObject)
+void InspectorPanel::Render()
 {
     ImGui::Begin("Inspector");
 
-    if (selectedGameObject)
+    if (Game::SelectedGameObject)
     {
         if (ImGui::CollapsingHeader("Rendering", ImGuiTreeNodeFlags_DefaultOpen))
         {
             const char *renderingModes[] = {"Regular", "Wireframe", "Points"};
-            ImGui::Combo("##label", &selectedGameObject->RenderingMode, renderingModes, IM_ARRAYSIZE(renderingModes), IM_ARRAYSIZE(renderingModes));
+            ImGui::Combo("##label", &Game::SelectedGameObject->RenderingMode, renderingModes, IM_ARRAYSIZE(renderingModes), IM_ARRAYSIZE(renderingModes));
         }
 
         ImGui::Spacing();
@@ -34,17 +34,17 @@ void InspectorPanel::Render(GameObject *&selectedGameObject)
             auto floatMin = std::numeric_limits<float>::min();
             auto floatMax = -std::numeric_limits<float>::max();
 
-            DrawVec3Control("Position", selectedGameObject->Position, 0.0f, 100.0f);
-            DrawVec3Control("Rotation", selectedGameObject->Rotation, 0.0f, 100.0f);
-            DrawVec3Control("Scale", selectedGameObject->Scale, 1.0f, 100.0f);
+            DrawVec3Control("Position", Game::SelectedGameObject->Position, 0.0f, 100.0f);
+            DrawVec3Control("Rotation", Game::SelectedGameObject->Rotation, 0.0f, 100.0f);
+            DrawVec3Control("Scale", Game::SelectedGameObject->Scale, 1.0f, 100.0f);
         }
 
         ImGui::Spacing();
 
         if (ImGui::CollapsingHeader("Stats", ImGuiTreeNodeFlags_DefaultOpen))
         {
-            ImGui::Text("Vertices: %d", selectedGameObject->GetVertexCount());
-            ImGui::Text("Triangles: %d", selectedGameObject->GetTriangleCount());
+            ImGui::Text("Vertices: %d", Game::SelectedGameObject->GetVertexCount());
+            ImGui::Text("Triangles: %d", Game::SelectedGameObject->GetTriangleCount());
         }
     }
 

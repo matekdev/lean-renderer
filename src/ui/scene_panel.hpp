@@ -13,9 +13,6 @@ class ScenePanel
 public:
     ScenePanel();
 
-    std::vector<GameObject> &GetGameObjects();
-    GameObject *&GetSelectedGameObject();
-
     void Render(GLFWwindow *window);
     void Input(GLFWwindow *window);
     void Resize(float width, float height);
@@ -28,9 +25,4 @@ private:
     Camera _camera;
     Shader _shader;
     ImGuizmo::OPERATION _activeGizmo = ImGuizmo::OPERATION::TRANSLATE;
-
-    GameObject *_selectedGameObject = nullptr;
-    std::vector<GameObject> _gameObjects;
-
-    void DeleteSelectedGameObject();
 };
