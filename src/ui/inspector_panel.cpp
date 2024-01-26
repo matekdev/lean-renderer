@@ -25,6 +25,7 @@ void InspectorPanel::Render()
         {
             const char *renderingModes[] = {"Regular", "Wireframe", "Points"};
             ImGui::Combo("##label", &Game::SelectedGameObject->RenderingMode, renderingModes, IM_ARRAYSIZE(renderingModes), IM_ARRAYSIZE(renderingModes));
+            ImGui::ColorEdit3("Color", glm::value_ptr(Game::SelectedGameObject->Color));
         }
 
         ImGui::Spacing();

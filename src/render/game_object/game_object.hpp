@@ -13,6 +13,7 @@ public:
     glm::vec3 Position = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 Rotation = glm::vec3(0.0f, 0.0f, 0.0f); // pitch, yaw, roll?
     glm::vec3 Scale = glm::vec3(1.0f, 1.0f, 1.0f);
+    glm::vec3 Color = glm::vec3(1.0f, 1.0f, 1.0f);
     int RenderingMode = 0;
 
     GameObject(const std::string &filePath);
