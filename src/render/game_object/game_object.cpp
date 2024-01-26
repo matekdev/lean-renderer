@@ -44,14 +44,14 @@ glm::mat4 GameObject::GetTransform()
 
 void GameObject::Render(Shader &shader)
 {
+    glUseProgram(shader.GetId());
+    shader.SetMat4(GetTransform(), "model");
+
     for (auto &mesh : _meshes)
     {
         mesh.SetRenderingMode(RenderingMode);
         mesh.Render(shader);
     }
-
-    shader.SetMat4(GetTransform(), "model");
-    glUseProgram(shader.GetId());
 }
 
 void GameObject::ProcessNode(aiNode *node, const aiScene *scene)
