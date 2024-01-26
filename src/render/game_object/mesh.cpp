@@ -61,21 +61,7 @@ void Mesh::Render(Shader &shader)
     glActiveTexture(GL_TEXTURE0);
 
     glBindVertexArray(_vao);
-    glDrawElements(GetRenderingMode(), _indices.size(), GL_UNSIGNED_INT, 0);
+    glPolygonMode(GL_FRONT_AND_BACK, _renderingMode == 1 ? GL_LINE : GL_FILL);
+    glDrawElements(_renderingMode == 2 ? GL_POINTS : GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
-}
-
-GLenum Mesh::GetRenderingMode()
-{
-    switch (_renderingMode)
-    {
-    case 0:
-        return GL_TRIANGLES;
-    case 1:
-        return GL_LINES;
-    case 2:
-        return GL_POINTS;
-    default:
-        return GL_TRIANGLES;
-    }
 }

@@ -27,6 +27,4 @@ private:
     std::vector<Texture> _textures;
 
     int _renderingMode;
-
-    GLenum GetRenderingMode();
 };
