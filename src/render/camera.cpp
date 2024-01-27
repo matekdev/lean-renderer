@@ -32,7 +32,7 @@ void Camera::Update(float width, float height, Shader &shader)
     _viewMatrix = glm::lookAt(_position, _position + _orientation, UP);
     _projectionMatrix = glm::perspective(glm::radians(90.0f), width / height, 0.1f, 100.0f);
 
-    shader.SetMat4(_projectionMatrix * _viewMatrix, "cameraMatrix");
+    shader.SetMat4(_projectionMatrix * _viewMatrix, "CameraMatrix");
 }
 
 void Camera::Input(float width, float height, GLFWwindow *window, bool isWindowHovered)

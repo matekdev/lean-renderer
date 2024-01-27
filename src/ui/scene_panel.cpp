@@ -15,8 +15,9 @@
 
 ScenePanel::ScenePanel() : _frameBuffer(FrameBuffer()), _camera(Camera()), _shader(Shader("shaders/vs.vert", "shaders/fs.frag"))
 {
+    Game::GameObjects.push_back(GameObject("models/icosphere/icosphere.obj"));
     Game::GameObjects.push_back(GameObject("models/hamster/hamster.obj"));
-    Game::GameObjects.push_back(GameObject("models/hamster/hamster.obj"));
+    Game::GameObjects.push_back(GameObject("models/cube/cube.obj"));
 }
 
 void ScenePanel::Render(GLFWwindow *window)

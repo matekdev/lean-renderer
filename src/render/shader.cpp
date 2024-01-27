@@ -38,6 +38,12 @@ void Shader::SetInt(int i, const std::string &name)
     glUniform1i(myLoc, i);
 }
 
+void Shader::SetBool(bool b, const std::string &name)
+{
+    GLint myLoc = glGetUniformLocation(GetId(), name.c_str());
+    glUniform1i(myLoc, b);
+}
+
 void Shader::SetVec3(const glm::vec3 &vec3, const std::string &name)
 {
     GLint myLoc = glGetUniformLocation(GetId(), name.c_str());
