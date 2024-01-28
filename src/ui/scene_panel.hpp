@@ -24,5 +24,6 @@ private:
     FrameBuffer _frameBuffer;
     Camera _camera;
     Shader _shader;
+    glm::mat4 _viewProjectionMatrix;
     ImGuizmo::OPERATION _activeGizmo = ImGuizmo::OPERATION::TRANSLATE;
 };

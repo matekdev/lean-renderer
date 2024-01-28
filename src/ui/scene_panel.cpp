@@ -46,7 +46,8 @@ void ScenePanel::Render(GLFWwindow *window)
     ImGui::Image(reinterpret_cast<void *>(textureId), ImVec2{_width, _height}, ImVec2{0, 1}, ImVec2{1, 0});
 
     _camera.Input(panelSize.x, panelSize.y, window, ImGui::IsWindowHovered());
-    _camera.Update(panelSize.x, panelSize.y, _shader);
+    _camera.Update(panelSize.x, panelSize.y);
+    _shader.SetMat4(_camera.GetViewProjectionMatrix(), "CameraMatrix");
 
     auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
     auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();

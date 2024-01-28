@@ -19,20 +19,23 @@ glm::mat4 Camera::GetProjectionMatrix()
     return _projectionMatrix;
 }
 
+glm::mat4 Camera::GetViewProjectionMatrix()
+{
+    return _projectionMatrix * _viewMatrix;
+}
+
 bool Camera::IsMouseLocked()
 {
     return _isMouseLocked;
 }
 
-void Camera::Update(float width, float height, Shader &shader)
+void Camera::Update(float width, float height)
 {
     _velocity *= VELOCITY_DECAY;
     _position += _velocity * Game::DeltaTime;
 
     _viewMatrix = glm::lookAt(_position, _position + _orientation, UP);
     _projectionMatrix = glm::perspective(glm::radians(90.0f), width / height, 0.1f, 100.0f);
-
-    shader.SetMat4(_projectionMatrix * _viewMatrix, "CameraMatrix");
 }
 
 void Camera::Input(float width, float height, GLFWwindow *window, bool isWindowHovered)
