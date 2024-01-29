@@ -30,56 +30,6 @@ void ScenePanel::Render(GLFWwindow *window)
 
     RenderPass();
 
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-    LOG(INFO) << "testing";
-
     ImGui::Begin("Scene");
 
     auto panelSize = ImGui::GetContentRegionAvail();
