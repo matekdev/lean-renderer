@@ -21,9 +21,17 @@ private:
     glm::vec2 _viewPortBounds[2];
     float _width;
     float _height;
+
     FrameBuffer _frameBuffer;
+    FrameBuffer _pickingBuffer;
+
+    Shader _modelShader;
+    Shader _pickingShader;
+
     Camera _camera;
-    Shader _shader;
     glm::mat4 _viewProjectionMatrix;
     ImGuizmo::OPERATION _activeGizmo = ImGuizmo::OPERATION::TRANSLATE;
+
+    void PickingPass();
+    void RenderPass();
 };

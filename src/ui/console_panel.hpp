@@ -17,6 +17,7 @@ public:
               const char *message, size_t message_len) override;
 
 private:
+    const int MAX_LOGS = 500;
     const std::string INFO = "[INFO] ";
     const std::string WARNING = "[WARNING] ";
     const std::string ERROR = "[ERROR] ";

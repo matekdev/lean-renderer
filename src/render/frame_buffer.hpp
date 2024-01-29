@@ -13,6 +13,7 @@ public:
     void Bind();
     void Unbind();
     GLuint GetTextureId();
+    int GetModelId(int x, int y, int totalModels);
 
 private:
     GLuint _fbo;

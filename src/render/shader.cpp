@@ -50,6 +50,12 @@ void Shader::SetVec3(const glm::vec3 &vec3, const std::string &name)
     glUniform3fv(myLoc, 1, glm::value_ptr(vec3));
 }
 
+void Shader::SetVec4(const glm::vec3 &vec4, const std::string &name)
+{
+    GLint myLoc = glGetUniformLocation(GetId(), name.c_str());
+    glUniform4fv(myLoc, 1, glm::value_ptr(vec4));
+}
+
 void Shader::SetMat4(const glm::mat4 &mat4, const std::string &name)
 {
     GLint myLoc = glGetUniformLocation(GetId(), name.c_str());
