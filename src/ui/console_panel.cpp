@@ -91,6 +91,9 @@ void ConsolePanel::send(google::LogSeverity severity, const char *full_filename,
     out << severityString;
     out << log;
 
+    if (_previousLogs.size() >= MAX_LOGS)
+        _previousLogs.erase(_previousLogs.begin());
+
     _previousLogs.push_back(out.str());
 }
 
