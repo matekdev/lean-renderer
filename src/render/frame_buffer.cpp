@@ -1,5 +1,7 @@
 #include "frame_buffer.hpp"
 
+#include <array>
+
 FrameBuffer::FrameBuffer() : _fbo{0}, _rbo{0}, _textureId{0}, _width{0}, _height{0} {}
 
 void FrameBuffer::CreateBuffer(int width, int height)
@@ -61,4 +63,13 @@ void FrameBuffer::Unbind()
 GLuint FrameBuffer::GetTextureId()
 {
     return _textureId;
+}
+
+// Make sure to bind this frame buffer before calling this.
+int FrameBuffer::ReadPixel(int x, int y)
+{
+    std::array<unsigned char, 4> data;
+    glReadPixels(0, 0, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data.data());
+    int id = data[0] + data[1] * 256 + data[2] * 256 * 256;
+    return id != 0x00ffffff ? id : -1;
 }

@@ -13,6 +13,7 @@ public:
     void Bind();
     void Unbind();
     GLuint GetTextureId();
+    int ReadPixel(int x, int y);
 
 private:
     GLuint _fbo;

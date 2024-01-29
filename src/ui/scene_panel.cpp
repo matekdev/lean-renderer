@@ -12,8 +12,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <GLFW/glfw3.h>
+#include <glm/gtc/type_ptr.hpp>
 
-ScenePanel::ScenePanel() : _frameBuffer(FrameBuffer()), _camera(Camera()), _shader(Shader("shaders/vs.vert", "shaders/fs.frag"))
+ScenePanel::ScenePanel() : _frameBuffer(FrameBuffer()), _pickingBuffer(FrameBuffer()), _camera(Camera()), _modelShader(Shader("shaders/model.vert", "shaders/model.frag")), _pickingShader(Shader("shaders/picking.vert", "shaders/picking.frag"))
 {
     Game::GameObjects.push_back(GameObject("models/icosphere/icosphere.obj"));
     Game::GameObjects.push_back(GameObject("models/hamster/hamster.obj"));
@@ -24,17 +25,8 @@ void ScenePanel::Render(GLFWwindow *window)
 {
     ImGui::ShowDemoWindow();
 
-    _frameBuffer.Bind();
-
-    glClearColor(0.31f, 0.41f, 0.46f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    for (auto &gameObject : Game::GameObjects)
-    {
-        gameObject.Render(_shader);
-    }
-
-    _frameBuffer.Unbind();
+    PickingPass();
+    RenderPass();
 
     ImGui::Begin("Scene");
 
@@ -47,7 +39,6 @@ void ScenePanel::Render(GLFWwindow *window)
 
     _camera.Input(panelSize.x, panelSize.y, window, ImGui::IsWindowHovered());
     _camera.Update(panelSize.x, panelSize.y);
-    _shader.SetMat4(_camera.GetViewProjectionMatrix(), "CameraMatrix");
 
     auto viewportMinRegion = ImGui::GetWindowContentRegionMin();
     auto viewportMaxRegion = ImGui::GetWindowContentRegionMax();
@@ -79,6 +70,51 @@ void ScenePanel::Render(GLFWwindow *window)
     ImGui::End();
 }
 
+void ScenePanel::PickingPass()
+{
+    // This is actually a horrible way to handle picking because we are essentially rendering everything twice.
+    // The first time rendering all objects with a unique color, and the second time to render the actual scene.
+    _pickingBuffer.Bind();
+
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    for (int i = 0; i < Game::GameObjects.size(); ++i)
+    {
+        auto &gameObject = Game::GameObjects[i];
+        gameObject.Render(_pickingShader);
+
+        int r = (i & 0x000000FF) >> 0;
+        int g = (i & 0x0000FF00) >> 8;
+        int b = (i & 0x00FF0000) >> 16;
+
+        GLint myLoc = glGetUniformLocation(_pickingShader.GetId(), "PickingColor");
+        glUniform4fv(myLoc, 1, glm::value_ptr(glm::vec4(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f)));
+    }
+
+    _pickingShader.SetMat4(_camera.GetViewProjectionMatrix(), "CameraMatrix");
+
+    LOG(INFO) << _pickingBuffer.ReadPixel(0, 0);
+
+    _pickingBuffer.Unbind();
+}
+
+void ScenePanel::RenderPass()
+{
+    _frameBuffer.Bind();
+
+    glClearColor(0.31f, 0.41f, 0.46f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    for (int i = 0; i < Game::GameObjects.size(); ++i)
+    {
+        auto &gameObject = Game::GameObjects[i];
+        gameObject.Render(_modelShader);
+    }
+
+    _modelShader.SetMat4(_camera.GetViewProjectionMatrix(), "CameraMatrix");
+    _frameBuffer.Unbind();
+}
+
 void ScenePanel::Input(GLFWwindow *window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
@@ -101,4 +137,5 @@ void ScenePanel::Resize(float width, float height)
     _width = width;
     _height = height;
     _frameBuffer.CreateBuffer(width, height);
+    _pickingBuffer.CreateBuffer(width, height);
 }
