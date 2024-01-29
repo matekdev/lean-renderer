@@ -66,14 +66,15 @@ GLuint FrameBuffer::GetTextureId()
     return _textureId;
 }
 
-int FrameBuffer::GetModelId(int x, int y, int totalModels)
+glm::vec3 FrameBuffer::EncodeIndex(int index)
+{
+    return glm::vec3(((index & 0x000000FF) >> 0) / 255.0f, ((index & 0x0000FF00) >> 8) / 255.0f, ((index & 0x00FF0000) >> 16) / 255.0f);
+}
+
+int FrameBuffer::DecodePixel(int x, int y)
 {
     std::array<unsigned char, 4> data;
     glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data.data());
-    int id = (data[0] + data[1] * 256 + data[2] * 256 * 256) + 1;
-
-    if (id == totalModels)
-        return 0;
-
-    return id < totalModels ? id : std::numeric_limits<int>::max();
+    auto id = data[0] + data[1] * 256 + data[2] * 256 * 256;
+    return id != 0x00ffffff ? id : -1;
 }

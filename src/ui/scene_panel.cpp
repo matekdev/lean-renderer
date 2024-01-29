@@ -25,7 +25,7 @@ void ScenePanel::Render(GLFWwindow *window)
 {
     ImGui::ShowDemoWindow();
 
-    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && !ImGuizmo::IsUsing() && !ImGuizmo::IsOver())
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && (!Game::SelectedGameObject || !ImGuizmo::IsUsing() && !ImGuizmo::IsOver()))
         PickingPass();
 
     RenderPass();
@@ -78,13 +78,16 @@ void ScenePanel::PickingPass()
     // The first time rendering all objects with a unique color, and the second time to render the actual scene.
     _pickingBuffer.Bind();
 
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    _pickingShader.Bind();
 
     for (int i = 0; i < Game::GameObjects.size(); ++i)
     {
         auto &gameObject = Game::GameObjects[i];
+        _pickingShader.SetVec3(_pickingBuffer.EncodeIndex(i), "PickingColor");
         gameObject.Render(_pickingShader);
-        _pickingShader.SetVec4(glm::vec4(((i & 0x000000FF) >> 0) / 255.0f, ((i & 0x0000FF00) >> 8) / 255.0f, ((i & 0x00FF0000) >> 16) / 255.0f, 1.0f), "PickingColor");
     }
 
     _pickingShader.SetMat4(_camera.GetViewProjectionMatrix(), "CameraMatrix");
@@ -97,12 +100,11 @@ void ScenePanel::PickingPass()
     int mouseX = (int)mx;
     int mouseY = (int)my;
 
-    auto totalObjects = Game::GameObjects.size();
-    auto index = _pickingBuffer.GetModelId(mouseX, mouseY, totalObjects);
-    if (index < totalObjects)
-        Game::SelectedGameObject = &Game::GameObjects[index];
-    else
-        Game::SelectedGameObject = nullptr;
+    if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
+    {
+        auto index = _pickingBuffer.DecodePixel(mouseX, mouseY);
+        Game::SelectedGameObject = index != -1 ? &Game::GameObjects[index] : nullptr;
+    }
 
     _pickingBuffer.Unbind();
 }
@@ -113,6 +115,8 @@ void ScenePanel::RenderPass()
 
     glClearColor(0.31f, 0.41f, 0.46f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    _modelShader.Bind();
 
     for (int i = 0; i < Game::GameObjects.size(); ++i)
     {

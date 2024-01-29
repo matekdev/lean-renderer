@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glad/glad.h>
+#include <glm/glm.hpp>
 
 class FrameBuffer
 {
@@ -13,7 +14,8 @@ public:
     void Bind();
     void Unbind();
     GLuint GetTextureId();
-    int GetModelId(int x, int y, int totalModels);
+    glm::vec3 EncodeIndex(int index);
+    int DecodePixel(int x, int y);
 
 private:
     GLuint _fbo;

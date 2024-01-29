@@ -32,6 +32,11 @@ GLuint Shader::GetId()
     return _id;
 }
 
+void Shader::Bind()
+{
+    glUseProgram(GetId());
+}
+
 void Shader::SetInt(int i, const std::string &name)
 {
     GLint myLoc = glGetUniformLocation(GetId(), name.c_str());
