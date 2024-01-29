@@ -25,7 +25,9 @@ void ScenePanel::Render(GLFWwindow *window)
 {
     ImGui::ShowDemoWindow();
 
-    PickingPass();
+    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && !ImGuizmo::IsUsing() && !ImGuizmo::IsOver())
+        PickingPass();
+
     RenderPass();
 
     ImGui::Begin("Scene");
@@ -82,18 +84,25 @@ void ScenePanel::PickingPass()
     {
         auto &gameObject = Game::GameObjects[i];
         gameObject.Render(_pickingShader);
-
-        int r = (i & 0x000000FF) >> 0;
-        int g = (i & 0x0000FF00) >> 8;
-        int b = (i & 0x00FF0000) >> 16;
-
-        GLint myLoc = glGetUniformLocation(_pickingShader.GetId(), "PickingColor");
-        glUniform4fv(myLoc, 1, glm::value_ptr(glm::vec4(r / 255.0f, g / 255.0f, b / 255.0f, 1.0f)));
+        _pickingShader.SetVec4(glm::vec4(((i & 0x000000FF) >> 0) / 255.0f, ((i & 0x0000FF00) >> 8) / 255.0f, ((i & 0x00FF0000) >> 16) / 255.0f, 1.0f), "PickingColor");
     }
 
     _pickingShader.SetMat4(_camera.GetViewProjectionMatrix(), "CameraMatrix");
 
-    LOG(INFO) << _pickingBuffer.ReadPixel(0, 0);
+    auto [mx, my] = ImGui::GetMousePos();
+    mx -= _viewPortBounds[0].x;
+    my -= _viewPortBounds[0].y;
+    glm::vec2 viewportSize = _viewPortBounds[1] - _viewPortBounds[0];
+    my = viewportSize.y - my;
+    int mouseX = (int)mx;
+    int mouseY = (int)my;
+
+    auto totalObjects = Game::GameObjects.size();
+    auto index = _pickingBuffer.GetModelId(mouseX, mouseY, totalObjects);
+    if (index < totalObjects)
+        Game::SelectedGameObject = &Game::GameObjects[index];
+    else
+        Game::SelectedGameObject = nullptr;
 
     _pickingBuffer.Unbind();
 }
