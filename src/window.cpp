@@ -1,6 +1,7 @@
 #include "window.hpp"
 
 #include "game.hpp"
+#include "glfw_input.hpp"
 
 Window::Window(int width, int height, const std::string &windowTitle) : _width(width), _height(height)
 {
@@ -15,6 +16,7 @@ Window::Window(int width, int height, const std::string &windowTitle) : _width(w
         throw std::runtime_error("Failed to create GLFW Window.");
 
     glfwSetWindowUserPointer(_glfwWindow, this);
+    glfwSetMouseButtonCallback(_glfwWindow, GLFWInput::OnMouseClick);
     glfwMakeContextCurrent(_glfwWindow);
     gladLoadGL();
     glEnable(GL_DEPTH_TEST);
@@ -68,4 +70,10 @@ int Window::GetWidth()
 int Window::GetHeight()
 {
     return _height;
+}
+
+void Window::OnMouseClick(int button, int action, int mods)
+{
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+        _scenePanel->OnMousePick();
 }

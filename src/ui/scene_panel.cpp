@@ -25,9 +25,6 @@ void ScenePanel::Render(GLFWwindow *window)
 {
     ImGui::ShowDemoWindow();
 
-    if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS && (!Game::SelectedGameObject || !ImGuizmo::IsUsing() && !ImGuizmo::IsOver()))
-        PickingPass();
-
     RenderPass();
 
     ImGui::Begin("Scene");
@@ -72,43 +69,6 @@ void ScenePanel::Render(GLFWwindow *window)
     ImGui::End();
 }
 
-void ScenePanel::PickingPass()
-{
-    // This is actually a horrible way to handle picking because we are essentially rendering everything twice.
-    // The first time rendering all objects with a unique color, and the second time to render the actual scene.
-    _pickingBuffer.Bind();
-
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    _pickingShader.Bind();
-
-    for (int i = 0; i < Game::GameObjects.size(); ++i)
-    {
-        auto &gameObject = Game::GameObjects[i];
-        _pickingShader.SetVec3(_pickingBuffer.EncodeIndex(i), "PickingColor");
-        gameObject.Render(_pickingShader);
-    }
-
-    _pickingShader.SetMat4(_camera.GetViewProjectionMatrix(), "CameraMatrix");
-
-    auto [mx, my] = ImGui::GetMousePos();
-    mx -= _viewPortBounds[0].x;
-    my -= _viewPortBounds[0].y;
-    glm::vec2 viewportSize = _viewPortBounds[1] - _viewPortBounds[0];
-    my = viewportSize.y - my;
-    int mouseX = (int)mx;
-    int mouseY = (int)my;
-
-    if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
-    {
-        auto index = _pickingBuffer.DecodePixel(mouseX, mouseY);
-        Game::SelectedGameObject = index != -1 ? &Game::GameObjects[index] : nullptr;
-    }
-
-    _pickingBuffer.Unbind();
-}
-
 void ScenePanel::RenderPass()
 {
     _frameBuffer.Bind();
@@ -151,4 +111,41 @@ void ScenePanel::Resize(float width, float height)
     _height = height;
     _frameBuffer.CreateBuffer(width, height);
     _pickingBuffer.CreateBuffer(width, height);
+}
+
+void ScenePanel::OnMousePick()
+{
+    if (Game::SelectedGameObject && (ImGuizmo::IsUsing() || ImGuizmo::IsOver()))
+        return;
+
+    _pickingBuffer.Bind();
+
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    _pickingShader.Bind();
+    _pickingShader.SetMat4(_camera.GetViewProjectionMatrix(), "CameraMatrix");
+
+    for (int i = 0; i < Game::GameObjects.size(); ++i)
+    {
+        auto &gameObject = Game::GameObjects[i];
+        _pickingShader.SetVec3(_pickingBuffer.EncodeIndex(i), "PickingColor");
+        gameObject.Render(_pickingShader);
+    }
+
+    auto [mx, my] = ImGui::GetMousePos();
+    mx -= _viewPortBounds[0].x;
+    my -= _viewPortBounds[0].y;
+    glm::vec2 viewportSize = _viewPortBounds[1] - _viewPortBounds[0];
+    my = viewportSize.y - my;
+    int mouseX = (int)mx;
+    int mouseY = (int)my;
+
+    if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
+    {
+        auto index = _pickingBuffer.DecodePixel(mouseX, mouseY);
+        Game::SelectedGameObject = index != -1 ? &Game::GameObjects[index] : nullptr;
+    }
+
+    _pickingBuffer.Unbind();
 }

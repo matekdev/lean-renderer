@@ -8,11 +8,11 @@
 #include "ui/objects_panel.hpp"
 #include "ui/inspector_panel.hpp"
 
-#include <iostream>
-#include <memory>
-
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
+
+#include <iostream>
+#include <memory>
 
 class Window
 {
@@ -21,12 +21,13 @@ public:
     ~Window();
 
     void Run();
-    GLFWwindow *GetNativeWindow();
+    static GLFWwindow *GetNativeWindow();
     int GetWidth();
     int GetHeight();
+    void OnMouseClick(int button, int action, int mods);
 
 private:
-    GLFWwindow *_glfwWindow;
+    inline static GLFWwindow *_glfwWindow;
     std::unique_ptr<OpenGLContext> _glContext;
     std::unique_ptr<UIContext> _uiContext;
 

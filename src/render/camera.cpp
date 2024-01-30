@@ -1,6 +1,7 @@
 #include "camera.hpp"
 
 #include "game.hpp"
+#include "glfw_input.hpp"
 #include "log.hpp"
 
 #include <GLFW/glfw3.h>
@@ -61,12 +62,11 @@ void Camera::Input(float width, float height, GLFWwindow *window, bool isWindowH
 
 void Camera::MouseMovement(float width, float height, GLFWwindow *window)
 {
-    double mouseX, mouseY;
-    glfwGetCursorPos(window, &mouseX, &mouseY);
+    auto mouse = GLFWInput::GetMousePosition();
     glfwSetCursorPos(window, (width / 2), (height / 2));
 
-    float rotationX = SENSITIVITY * (float)(mouseY - (height / 2)) / height;
-    float rotationY = SENSITIVITY * (float)(mouseX - (width / 2)) / width;
+    float rotationX = SENSITIVITY * (float)(mouse.y - (height / 2)) / height;
+    float rotationY = SENSITIVITY * (float)(mouse.x - (width / 2)) / width;
 
     glm::vec3 newOrientation = glm::rotate(_orientation, glm::radians(-rotationX), glm::normalize(glm::cross(_orientation, UP)));
 
