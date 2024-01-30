@@ -26,10 +26,6 @@ void FrameBuffer::CreateBuffer(int width, int height)
     glGenTextures(1, &_depthId);
     glBindTexture(GL_TEXTURE_2D, _depthId);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _depthId, 0);
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -77,8 +73,8 @@ glm::vec3 FrameBuffer::EncodeIndex(int index)
 
 int FrameBuffer::DecodePixel(int x, int y)
 {
-    std::array<unsigned char, 4> data;
-    glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, data.data());
-    auto id = data[0] + data[1] * 256 + data[2] * 256 * 256;
+    std::array<unsigned char, 4> pixelData;
+    glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixelData.data());
+    auto id = pixelData[0] + pixelData[1] * 256 + pixelData[2] * 256 * 256;
     return id != 0x00ffffff ? id : -1;
 }
