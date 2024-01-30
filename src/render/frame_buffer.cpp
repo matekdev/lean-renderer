@@ -3,7 +3,7 @@
 #include <limits>
 #include <array>
 
-FrameBuffer::FrameBuffer() : _fbo{0}, _rbo{0}, _textureId{0}, _width{0}, _height{0} {}
+FrameBuffer::FrameBuffer() : _fbo{0}, _textureId{0}, _depthId{0}, _width{0}, _height{0} {}
 
 void FrameBuffer::CreateBuffer(int width, int height)
 {
@@ -23,10 +23,14 @@ void FrameBuffer::CreateBuffer(int width, int height)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _textureId, 0);
 
-    glGenRenderbuffers(1, &_rbo);
-    glBindRenderbuffer(GL_RENDERBUFFER, _rbo);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, width, height);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, _rbo);
+    glGenTextures(1, &_depthId);
+    glBindTexture(GL_TEXTURE_2D, _depthId);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _depthId, 0);
 
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
     glBindTexture(GL_TEXTURE_2D, 0);
@@ -47,7 +51,7 @@ void FrameBuffer::DeleteBuffer()
 
     glDeleteFramebuffers(1, &_fbo);
     glDeleteTextures(1, &_textureId);
-    glDeleteRenderbuffers(1, &_rbo);
+    glDeleteTextures(1, &_depthId);
 }
 
 void FrameBuffer::Bind()
