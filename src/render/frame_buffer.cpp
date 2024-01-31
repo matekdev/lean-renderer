@@ -5,7 +5,7 @@
 
 FrameBuffer::FrameBuffer() : _fbo{0}, _textureId{0}, _depthId{0}, _width{0}, _height{0} {}
 
-void FrameBuffer::CreateBuffer(int width, int height)
+void FrameBuffer::CreateBuffer(float width, float height)
 {
     _width = width;
     _height = height;
@@ -66,12 +66,12 @@ GLuint FrameBuffer::GetTextureId()
     return _textureId;
 }
 
-glm::vec3 FrameBuffer::EncodeIndex(int index)
+glm::vec3 FrameBuffer::EncodeId(int id)
 {
-    return glm::vec3(((index & 0x000000FF) >> 0) / 255.0f, ((index & 0x0000FF00) >> 8) / 255.0f, ((index & 0x00FF0000) >> 16) / 255.0f);
+    return glm::vec3(((id & 0x000000FF) >> 0) / 255.0f, ((id & 0x0000FF00) >> 8) / 255.0f, ((id & 0x00FF0000) >> 16) / 255.0f);
 }
 
-int FrameBuffer::DecodePixel(int x, int y)
+int FrameBuffer::DecodePixel(float x, float y)
 {
     std::array<unsigned char, 4> pixelData;
     glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixelData.data());

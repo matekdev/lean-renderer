@@ -113,7 +113,7 @@ void ScenePanel::Resize(float width, float height)
     _pickingBuffer.CreateBuffer(width, height);
 }
 
-void ScenePanel::OnMousePick()
+void ScenePanel::OnMouseClick()
 {
     if (Game::SelectedGameObject && (ImGuizmo::IsUsing() || ImGuizmo::IsOver()))
         return;
@@ -129,17 +129,15 @@ void ScenePanel::OnMousePick()
     for (int i = 0; i < Game::GameObjects.size(); ++i)
     {
         auto &gameObject = Game::GameObjects[i];
-        _pickingShader.SetVec3(_pickingBuffer.EncodeIndex(i), Shader::PICKING_COLOR);
+        _pickingShader.SetVec3(_pickingBuffer.EncodeId(i), Shader::PICKING_COLOR);
         gameObject.Render(_pickingShader);
     }
 
-    auto [mx, my] = ImGui::GetMousePos();
-    mx -= _viewPortBounds[0].x;
-    my -= _viewPortBounds[0].y;
+    auto [mouseX, mouseY] = ImGui::GetMousePos();
+    mouseX -= _viewPortBounds[0].x;
+    mouseY -= _viewPortBounds[0].y;
     glm::vec2 viewportSize = _viewPortBounds[1] - _viewPortBounds[0];
-    my = viewportSize.y - my;
-    int mouseX = (int)mx;
-    int mouseY = (int)my;
+    mouseY = viewportSize.y - mouseY;
 
     if (mouseX >= 0 && mouseY >= 0 && mouseX < (int)viewportSize.x && mouseY < (int)viewportSize.y)
     {

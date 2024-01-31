@@ -9,13 +9,13 @@ public:
     FrameBuffer();
     ~FrameBuffer();
 
-    void CreateBuffer(int width, int height);
+    void CreateBuffer(float width, float height);
     void DeleteBuffer();
     void Bind();
     void Unbind();
     GLuint GetTextureId();
-    glm::vec3 EncodeIndex(int index);
-    int DecodePixel(int x, int y);
+    glm::vec3 EncodeId(int id);
+    int DecodePixel(float x, float y);
 
 private:
     GLuint _fbo;

@@ -16,7 +16,7 @@ public:
     void Render(GLFWwindow *window);
     void Input(GLFWwindow *window);
     void Resize(float width, float height);
-    void OnMousePick();
+    void OnMouseClick();
 
 private:
     glm::vec2 _viewPortBounds[2];
