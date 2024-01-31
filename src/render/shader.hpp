@@ -9,6 +9,14 @@
 class Shader
 {
 public:
+    inline static const std::string COLOR = "Color";
+    inline static const std::string HAS_TEXTURE = "HasTexture";
+
+    inline static const std::string PICKING_COLOR = "PickingColor";
+
+    inline static const std::string MODEL_MATRIX = "ModelMatrix";
+    inline static const std::string CAMERA_MATRIX = "CameraMatrix";
+
     Shader(const std::string &vertexShaderPath, const std::string &fragmentShaderPath);
 
     GLuint GetId();

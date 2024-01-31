@@ -84,7 +84,7 @@ void ScenePanel::RenderPass()
         gameObject.Render(_modelShader);
     }
 
-    _modelShader.SetMat4(_camera.GetViewProjectionMatrix(), "CameraMatrix");
+    _modelShader.SetMat4(_camera.GetViewProjectionMatrix(), Shader::CAMERA_MATRIX);
     _frameBuffer.Unbind();
 }
 
@@ -124,12 +124,12 @@ void ScenePanel::OnMousePick()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     _pickingShader.Bind();
-    _pickingShader.SetMat4(_camera.GetViewProjectionMatrix(), "CameraMatrix");
+    _pickingShader.SetMat4(_camera.GetViewProjectionMatrix(), Shader::CAMERA_MATRIX);
 
     for (int i = 0; i < Game::GameObjects.size(); ++i)
     {
         auto &gameObject = Game::GameObjects[i];
-        _pickingShader.SetVec3(_pickingBuffer.EncodeIndex(i), "PickingColor");
+        _pickingShader.SetVec3(_pickingBuffer.EncodeIndex(i), Shader::PICKING_COLOR);
         gameObject.Render(_pickingShader);
     }
 

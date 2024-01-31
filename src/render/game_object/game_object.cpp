@@ -44,9 +44,9 @@ glm::mat4 GameObject::GetTransform()
 
 void GameObject::Render(Shader &shader)
 {
-    shader.SetBool(_texturesLoaded.size() > 0, "HasTexture");
-    shader.SetVec3(Color, "Color");
-    shader.SetMat4(GetTransform(), "Model");
+    shader.SetBool(_texturesLoaded.size() > 0, Shader::HAS_TEXTURE);
+    shader.SetVec3(Color, Shader::COLOR);
+    shader.SetMat4(GetTransform(), Shader::MODEL_MATRIX);
 
     for (auto &mesh : _meshes)
     {
