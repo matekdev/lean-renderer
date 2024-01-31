@@ -68,13 +68,16 @@ GLuint FrameBuffer::GetTextureId()
 
 glm::vec3 FrameBuffer::EncodeId(int id)
 {
-    return glm::vec3(((id & 0x000000FF) >> 0) / 255.0f, ((id & 0x0000FF00) >> 8) / 255.0f, ((id & 0x00FF0000) >> 16) / 255.0f);
+    return glm::vec3(
+        static_cast<float>((id & 0x000000FF) >> 0) / 255.0f,
+        static_cast<float>((id & 0x0000FF00) >> 8) / 255.0f,
+        static_cast<float>((id & 0x00FF0000) >> 16) / 255.0f);
 }
 
 int FrameBuffer::DecodePixel(float x, float y)
 {
-    std::array<unsigned char, 4> pixelData;
-    glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixelData.data());
-    auto id = pixelData[0] + pixelData[1] * 256 + pixelData[2] * 256 * 256;
+    std::array<unsigned char, 4> byte;
+    glReadPixels(x, y, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, byte.data());
+    auto id = byte[0] + byte[1] * 256 + byte[2] * 256 * 256;
     return id != 0x00ffffff ? id : -1;
 }
