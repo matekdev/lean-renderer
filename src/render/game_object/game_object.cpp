@@ -1,6 +1,7 @@
 #include "game_object.hpp"
 
 #include "log.hpp"
+#include "game.hpp"
 
 #include <glm/gtc/matrix_transform.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
@@ -8,7 +9,7 @@
 
 #include <numeric>
 
-GameObject::GameObject(const std::string &filePath)
+GameObject::GameObject(const std::string &filePath, const GameObject::Type &type) : _type(type)
 {
     Assimp::Importer import;
     const aiScene *scene = import.ReadFile(filePath, aiProcess_Triangulate | aiProcess_FlipUVs);
@@ -24,6 +25,11 @@ GameObject::GameObject(const std::string &filePath)
 
     ProcessNode(scene->mRootNode, scene);
     CalculateStats();
+}
+
+GameObject::Type GameObject::GetType()
+{
+    return _type;
 }
 
 int GameObject::GetVertexCount()
@@ -45,8 +51,11 @@ glm::mat4 GameObject::GetTransform()
 void GameObject::Render(Shader &shader)
 {
     shader.SetBool(_texturesLoaded.size() > 0, Shader::HAS_TEXTURE);
-    shader.SetVec3(Color, Shader::COLOR);
+    shader.SetVec3(Color, Shader::MODEL_COLOR);
     shader.SetMat4(GetTransform(), Shader::MODEL_MATRIX);
+
+    if (Game::LightSource)
+        shader.SetVec3(Game::LightSource->Color, Shader::LIGHT_COLOR);
 
     for (auto &mesh : _meshes)
     {

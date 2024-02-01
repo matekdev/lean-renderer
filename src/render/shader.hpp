@@ -9,7 +9,8 @@
 class Shader
 {
 public:
-    inline static const std::string COLOR = "Color";
+    inline static const std::string MODEL_COLOR = "ModelColor";
+    inline static const std::string LIGHT_COLOR = "LightColor";
     inline static const std::string HAS_TEXTURE = "HasTexture";
 
     inline static const std::string PICKING_COLOR = "PickingColor";

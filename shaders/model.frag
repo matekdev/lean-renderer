@@ -6,7 +6,8 @@ in vec2 TexCoord;
 out vec4 FragColor;
 
 uniform bool HasTexture;
-uniform vec3 Color;
+uniform vec3 ModelColor;
+uniform vec3 LightColor;
 uniform sampler2D texture_diffuse1;
 
 void main()
@@ -15,5 +16,5 @@ void main()
     if (HasTexture)
         outputColor = texture(texture_diffuse1, TexCoord);
 
-    FragColor = outputColor * vec4(Color, 1.0);
+    FragColor = outputColor * vec4(LightColor * ModelColor, 1.0);
 }

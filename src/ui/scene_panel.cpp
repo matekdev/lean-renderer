@@ -14,11 +14,16 @@
 #include <GLFW/glfw3.h>
 #include <glm/gtc/type_ptr.hpp>
 
-ScenePanel::ScenePanel() : _frameBuffer(FrameBuffer()), _pickingBuffer(FrameBuffer()), _camera(Camera()), _modelShader(Shader("shaders/model.vert", "shaders/model.frag")), _pickingShader(Shader("shaders/picking.vert", "shaders/picking.frag"))
+ScenePanel::ScenePanel() : _frameBuffer(FrameBuffer()),
+                           _pickingBuffer(FrameBuffer()), _camera(Camera()),
+                           _modelShader(Shader("shaders/model.vert", "shaders/model.frag")),
+                           _lightShader(Shader("shaders/light.vert", "shaders/light.frag")),
+                           _pickingShader(Shader("shaders/picking.vert", "shaders/picking.frag"))
 {
-    Game::GameObjects.push_back(GameObject("models/icosphere/icosphere.obj"));
-    Game::GameObjects.push_back(GameObject("models/hamster/hamster.obj"));
     Game::GameObjects.push_back(GameObject("models/cube/cube.obj"));
+
+    Game::GameObjects.push_back(GameObject("models/light/light.obj", GameObject::Type::Light));
+    Game::LightSource = &Game::GameObjects.back();
 }
 
 void ScenePanel::Render(GLFWwindow *window)
@@ -76,15 +81,14 @@ void ScenePanel::RenderPass()
     glClearColor(0.31f, 0.41f, 0.46f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    _modelShader.Bind();
-
-    for (int i = 0; i < Game::GameObjects.size(); ++i)
+    for (auto &gameObject : Game::GameObjects)
     {
-        auto &gameObject = Game::GameObjects[i];
-        gameObject.Render(_modelShader);
+        auto &shader = gameObject.GetType() == GameObject::Type::Model ? _modelShader : _lightShader;
+        shader.Bind();
+        gameObject.Render(shader);
+        shader.SetMat4(_camera.GetViewProjectionMatrix(), Shader::CAMERA_MATRIX);
     }
 
-    _modelShader.SetMat4(_camera.GetViewProjectionMatrix(), Shader::CAMERA_MATRIX);
     _frameBuffer.Unbind();
 }
 
