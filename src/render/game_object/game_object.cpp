@@ -55,7 +55,10 @@ void GameObject::Render(Shader &shader)
     shader.SetMat4(GetTransform(), Shader::MODEL_MATRIX);
 
     if (Game::LightSource)
+    {
+        shader.SetVec3(Game::LightSource->Position, Shader::LIGHT_POSITION);
         shader.SetVec3(Game::LightSource->Color, Shader::LIGHT_COLOR);
+    }
 
     for (auto &mesh : _meshes)
     {

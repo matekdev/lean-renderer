@@ -21,6 +21,7 @@ ScenePanel::ScenePanel() : _frameBuffer(FrameBuffer()),
                            _pickingShader(Shader("shaders/picking.vert", "shaders/picking.frag"))
 {
     Game::GameObjects.push_back(GameObject("models/cube/cube.obj"));
+    Game::GameObjects.push_back(GameObject("models/hamster/hamster.obj"));
 
     Game::GameObjects.push_back(GameObject("models/light/light.obj", GameObject::Type::Light));
     Game::LightSource = &Game::GameObjects.back();
