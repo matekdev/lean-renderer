@@ -24,6 +24,12 @@ GameObject::GameObject(const std::string &filePath, const GameObject::Type &type
     Name = filePath.substr(filePath.find_last_of("/\\") + 1) + std::to_string(_id++);
     _directory = filePath.substr(0, filePath.find_last_of('/'));
 
+    if (type == GameObject::Type::Light)
+    {
+        Ambient = glm::vec3(1.0f);
+        Diffuse = glm::vec3(1.0f);
+    }
+
     ProcessNode(scene->mRootNode, scene);
     CalculateStats();
 }
@@ -55,13 +61,19 @@ void GameObject::Render(Shader &shader)
     shader.SetVec3(Shader::CAMERA_POSITION, Camera::Instance->GetPosition());
     shader.SetMat4(Shader::CAMERA_MATRIX, Camera::Instance->GetViewProjectionMatrix());
     shader.SetBool(Shader::HAS_TEXTURE, _texturesLoaded.size() > 0);
-    shader.SetVec3(Shader::MODEL_COLOR, Color);
     shader.SetMat4(Shader::MODEL_MATRIX, GetTransform());
+
+    shader.SetVec3(Shader::MATERIAL_AMBIENT, Ambient);
+    shader.SetVec3(Shader::MATERIAL_DIFFUSE, Diffuse);
+    shader.SetVec3(Shader::MATERIAL_SPECULAR, Specular);
+    shader.SetFloat(Shader::MATERIAL_SHININESS, Shininess);
 
     if (Game::LightSource)
     {
         shader.SetVec3(Shader::LIGHT_POSITION, Game::LightSource->Position);
-        shader.SetVec3(Shader::LIGHT_COLOR, Game::LightSource->Color);
+        shader.SetVec3(Shader::LIGHT_AMBIENT, Game::LightSource->Ambient);
+        shader.SetVec3(Shader::LIGHT_DIFFUSE, Game::LightSource->Diffuse);
+        shader.SetVec3(Shader::LIGHT_SPECULAR, Game::LightSource->Specular);
     }
 
     for (auto &mesh : _meshes)

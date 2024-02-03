@@ -1,5 +1,12 @@
 #version 330 core
 
+struct Material {
+    vec3 Ambient;
+    vec3 Diffuse;
+    vec3 Specular;
+    float Shininess; // Impacts the scattering/radius of specular
+};
+
 in vec3 Normal;
 in vec2 TexCoord;
 in vec3 FragPosition;
@@ -7,10 +14,11 @@ in vec3 FragPosition;
 out vec4 FragColor;
 
 uniform vec3 CameraPosition;
+uniform vec3 LightPosition;
 uniform bool HasTexture;
 uniform vec3 ModelColor;
-uniform vec3 LightPosition;
-uniform vec3 LightColor;
+uniform Material LightSettings;
+uniform Material MaterialSettings;
 uniform sampler2D texture_diffuse1;
 
 void main()
@@ -20,20 +28,20 @@ void main()
         outputColor = texture(texture_diffuse1, TexCoord);
 
     // ambient light
-    float ambientLightingStrength = 0.1;
-    vec3 ambientLight = ambientLightingStrength * LightColor;
+    vec3 ambientLight = LightSettings.Ambient * MaterialSettings.Ambient;
 
     // diffuse light
     vec3 norm = normalize(Normal);
     vec3 lightDirection = normalize(LightPosition - FragPosition);
     float diffuseImpact = max(dot(norm, lightDirection), 0.0);
-    vec3 diffuseLight = diffuseImpact * LightColor;
+    vec3 diffuseLight = LightSettings.Diffuse * (diffuseImpact * MaterialSettings.Diffuse);
 
     // specular light
-    float specularLightingStrength = 0.5;
     vec3 viewDirection = normalize(CameraPosition - FragPosition);
     vec3 reflectDirection = reflect(-lightDirection, norm);
-    vec3 specularLight = specularLightingStrength * pow(max(dot(viewDirection, reflectDirection), 0.0), 32) * LightColor;
+    float specularStrength = pow(max(dot(viewDirection, reflectDirection), 0.0), MaterialSettings.Shininess);
+    vec3 specularLight = LightSettings.Specular * (specularStrength * MaterialSettings.Specular);
 
-    FragColor = outputColor * vec4((ambientLight + diffuseLight + specularLight) * ModelColor, 1.0);
+    vec3 result = ambientLight + diffuseLight + specularLight;
+    FragColor = outputColor * vec4(result, 1.0);
 }

@@ -9,11 +9,18 @@
 class Shader
 {
 public:
-    inline static const std::string MODEL_COLOR = "ModelColor";
-    inline static const std::string LIGHT_COLOR = "LightColor";
-    inline static const std::string LIGHT_POSITION = "LightPosition";
     inline static const std::string HAS_TEXTURE = "HasTexture";
     inline static const std::string CAMERA_POSITION = "CameraPosition";
+    inline static const std::string LIGHT_POSITION = "LightPosition";
+
+    inline static const std::string LIGHT_AMBIENT = "LightSettings.Ambient";
+    inline static const std::string LIGHT_DIFFUSE = "LightSettings.Diffuse";
+    inline static const std::string LIGHT_SPECULAR = "LightSettings.Specular";
+
+    inline static const std::string MATERIAL_AMBIENT = "MaterialSettings.Ambient";
+    inline static const std::string MATERIAL_DIFFUSE = "MaterialSettings.Diffuse";
+    inline static const std::string MATERIAL_SPECULAR = "MaterialSettings.Specular";
+    inline static const std::string MATERIAL_SHININESS = "MaterialSettings.Shininess";
 
     inline static const std::string PICKING_COLOR = "PickingColor";
 
@@ -25,6 +32,7 @@ public:
     GLuint GetId();
     void Bind();
     void SetInt(const std::string &name, int i);
+    void SetFloat(const std::string &name, float f);
     void SetBool(const std::string &name, bool b);
     void SetVec3(const std::string &name, const glm::vec3 &vec3);
     void SetVec4(const std::string &name, const glm::vec3 &vec4);

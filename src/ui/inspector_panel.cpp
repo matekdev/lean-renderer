@@ -25,7 +25,12 @@ void InspectorPanel::Render()
         {
             const char *renderingModes[] = {"Regular", "Wireframe", "Points"};
             ImGui::Combo("##label", &Game::SelectedGameObject->RenderingMode, renderingModes, IM_ARRAYSIZE(renderingModes), IM_ARRAYSIZE(renderingModes));
-            ImGui::ColorEdit3("Color", glm::value_ptr(Game::SelectedGameObject->Color));
+            ImGui::ColorEdit3("Ambient", glm::value_ptr(Game::SelectedGameObject->Ambient));
+            ImGui::ColorEdit3("Diffuse", glm::value_ptr(Game::SelectedGameObject->Diffuse));
+            ImGui::ColorEdit3("Specular", glm::value_ptr(Game::SelectedGameObject->Specular));
+
+            if (Game::SelectedGameObject->GetType() == GameObject::Type::Model)
+                ImGui::DragFloat("Shininess", &Game::SelectedGameObject->Shininess, 1.0f, 1.0f, 500.0f);
         }
 
         ImGui::Spacing();

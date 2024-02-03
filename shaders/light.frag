@@ -2,9 +2,15 @@
 
 out vec4 FragColor;
 
-uniform vec3 ModelColor;
+struct Material {
+    vec3 Ambient;
+    vec3 Diffuse;
+    vec3 Specular;
+};
+
+uniform Material LightSettings;
 
 void main()
 {
-    FragColor = vec4(ModelColor, 1.0);
+    FragColor = vec4(LightSettings.Ambient * LightSettings.Diffuse, 1.0);
 }

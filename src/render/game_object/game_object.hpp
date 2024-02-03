@@ -19,7 +19,13 @@ public:
     glm::vec3 Position = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 Rotation = glm::vec3(0.0f, 0.0f, 0.0f); // pitch, yaw, roll?
     glm::vec3 Scale = glm::vec3(1.0f, 1.0f, 1.0f);
-    glm::vec3 Color = glm::vec3(1.0f, 1.0f, 1.0f);
+
+    // material
+    glm::vec3 Ambient = glm::vec3(0.5f, 0.5f, 0.5f);
+    glm::vec3 Diffuse = glm::vec3(0.5f, 0.5f, 0.5f);
+    glm::vec3 Specular = glm::vec3(0.5f, 0.5f, 0.5f);
+    float Shininess = 32.0f;
+
     int RenderingMode = 0;
 
     GameObject(const std::string &filePath, const Type &type = Type::Model);
