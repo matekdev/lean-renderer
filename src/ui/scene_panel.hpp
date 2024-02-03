@@ -27,6 +27,7 @@ private:
     FrameBuffer _pickingBuffer;
 
     Shader _modelShader;
+    Shader _lightShader;
     Shader _pickingShader;
 
     Camera _camera;

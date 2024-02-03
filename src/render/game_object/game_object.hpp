@@ -9,6 +9,12 @@
 class GameObject
 {
 public:
+    enum Type
+    {
+        Model,
+        Light
+    };
+
     std::string Name;
     glm::vec3 Position = glm::vec3(0.0f, 0.0f, 0.0f);
     glm::vec3 Rotation = glm::vec3(0.0f, 0.0f, 0.0f); // pitch, yaw, roll?
@@ -16,8 +22,9 @@ public:
     glm::vec3 Color = glm::vec3(1.0f, 1.0f, 1.0f);
     int RenderingMode = 0;
 
-    GameObject(const std::string &filePath);
+    GameObject(const std::string &filePath, const Type &type = Type::Model);
 
+    Type GetType();
     int GetVertexCount();
     int GetTriangleCount();
     glm::mat4 GetTransform();
@@ -25,6 +32,7 @@ public:
 
 private:
     inline static int _id;
+    Type _type;
     std::vector<Mesh> _meshes;
     std::vector<Texture> _texturesLoaded;
     std::string _directory;
