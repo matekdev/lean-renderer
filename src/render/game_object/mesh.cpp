@@ -54,7 +54,7 @@ void Mesh::Render(Shader &shader)
         else if (name == "texture_specular")
             number = std::to_string(specularNr++);
 
-        shader.SetInt(i, "material." + name + number); // TODO: double check.
+        shader.SetInt("material." + name + number, i); // TODO: double check.
         glBindTexture(GL_TEXTURE_2D, _textures[i].Id);
     }
 

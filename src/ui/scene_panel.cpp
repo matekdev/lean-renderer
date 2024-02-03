@@ -102,20 +102,14 @@ void ScenePanel::Input(GLFWwindow *window)
 
     auto isUsingMouse = ImGuizmo::IsUsing() || _camera.IsMouseLocked();
 
-    // Don't allow scale and rotation of light sources for now.
-    auto isLightSourceSelected = Game::SelectedGameObject && Game::SelectedGameObject->GetType() == GameObject::Type::Light;
-
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS && !isUsingMouse)
         _activeGizmo = ImGuizmo::OPERATION::TRANSLATE;
 
-    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS && !isUsingMouse && !isLightSourceSelected)
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS && !isUsingMouse)
         _activeGizmo = ImGuizmo::OPERATION::ROTATE;
 
-    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS && !isUsingMouse && !isLightSourceSelected)
+    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS && !isUsingMouse)
         _activeGizmo = ImGuizmo::OPERATION::SCALE;
-
-    if (isLightSourceSelected && _activeGizmo != ImGuizmo::OPERATION::TRANSLATE)
-        _activeGizmo = ImGuizmo::OPERATION::TRANSLATE;
 }
 
 void ScenePanel::Resize(float width, float height)
@@ -140,7 +134,7 @@ void ScenePanel::OnMouseClick()
     {
         auto &gameObject = Game::GameObjects[i];
         _pickingShader.Bind();
-        _pickingShader.SetVec3(_pickingBuffer.EncodeId(i), Shader::PICKING_COLOR);
+        _pickingShader.SetVec3(Shader::PICKING_COLOR, _pickingBuffer.EncodeId(i));
         gameObject.Render(_pickingShader);
     }
 

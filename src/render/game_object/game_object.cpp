@@ -52,16 +52,16 @@ glm::mat4 GameObject::GetTransform()
 void GameObject::Render(Shader &shader)
 {
     shader.Bind();
-    shader.SetVec3(Camera::Instance->GetPosition(), Shader::CAMERA_POSITION);
-    shader.SetMat4(Camera::Instance->GetViewProjectionMatrix(), Shader::CAMERA_MATRIX);
-    shader.SetBool(_texturesLoaded.size() > 0, Shader::HAS_TEXTURE);
-    shader.SetVec3(Color, Shader::MODEL_COLOR);
-    shader.SetMat4(GetTransform(), Shader::MODEL_MATRIX);
+    shader.SetVec3(Shader::CAMERA_POSITION, Camera::Instance->GetPosition());
+    shader.SetMat4(Shader::CAMERA_MATRIX, Camera::Instance->GetViewProjectionMatrix());
+    shader.SetBool(Shader::HAS_TEXTURE, _texturesLoaded.size() > 0);
+    shader.SetVec3(Shader::MODEL_COLOR, Color);
+    shader.SetMat4(Shader::MODEL_MATRIX, GetTransform());
 
     if (Game::LightSource)
     {
-        shader.SetVec3(Game::LightSource->Position, Shader::LIGHT_POSITION);
-        shader.SetVec3(Game::LightSource->Color, Shader::LIGHT_COLOR);
+        shader.SetVec3(Shader::LIGHT_POSITION, Game::LightSource->Position);
+        shader.SetVec3(Shader::LIGHT_COLOR, Game::LightSource->Color);
     }
 
     for (auto &mesh : _meshes)

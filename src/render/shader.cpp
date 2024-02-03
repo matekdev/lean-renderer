@@ -37,31 +37,31 @@ void Shader::Bind()
     glUseProgram(GetId());
 }
 
-void Shader::SetInt(int i, const std::string &name)
+void Shader::SetInt(const std::string &name, int i)
 {
     GLint myLoc = glGetUniformLocation(GetId(), name.c_str());
     glUniform1i(myLoc, i);
 }
 
-void Shader::SetBool(bool b, const std::string &name)
+void Shader::SetBool(const std::string &name, bool b)
 {
     GLint myLoc = glGetUniformLocation(GetId(), name.c_str());
     glUniform1i(myLoc, b);
 }
 
-void Shader::SetVec3(const glm::vec3 &vec3, const std::string &name)
+void Shader::SetVec3(const std::string &name, const glm::vec3 &vec3)
 {
     GLint myLoc = glGetUniformLocation(GetId(), name.c_str());
     glUniform3fv(myLoc, 1, glm::value_ptr(vec3));
 }
 
-void Shader::SetVec4(const glm::vec3 &vec4, const std::string &name)
+void Shader::SetVec4(const std::string &name, const glm::vec3 &vec4)
 {
     GLint myLoc = glGetUniformLocation(GetId(), name.c_str());
     glUniform4fv(myLoc, 1, glm::value_ptr(vec4));
 }
 
-void Shader::SetMat4(const glm::mat4 &mat4, const std::string &name)
+void Shader::SetMat4(const std::string &name, const glm::mat4 &mat4)
 {
     GLint myLoc = glGetUniformLocation(GetId(), name.c_str());
     glUniformMatrix4fv(myLoc, 1, GL_FALSE, glm::value_ptr(mat4));

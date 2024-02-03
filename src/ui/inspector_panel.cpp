@@ -36,12 +36,8 @@ void InspectorPanel::Render()
             auto floatMax = -std::numeric_limits<float>::max();
 
             DrawVec3Control("Position", Game::SelectedGameObject->Position, 0.0f, 100.0f);
-
-            if (Game::SelectedGameObject->GetType() == GameObject::Type::Model)
-            {
-                DrawVec3Control("Rotation", Game::SelectedGameObject->Rotation, 0.0f, 100.0f);
-                DrawVec3Control("Scale", Game::SelectedGameObject->Scale, 1.0f, 100.0f);
-            }
+            DrawVec3Control("Rotation", Game::SelectedGameObject->Rotation, 0.0f, 100.0f);
+            DrawVec3Control("Scale", Game::SelectedGameObject->Scale, 1.0f, 100.0f);
         }
 
         ImGui::Spacing();
