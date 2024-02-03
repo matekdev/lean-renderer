@@ -85,10 +85,7 @@ void ScenePanel::RenderPass()
     for (auto &gameObject : Game::GameObjects)
     {
         auto &shader = gameObject.GetType() == GameObject::Type::Model ? _modelShader : _lightShader;
-        shader.Bind();
         gameObject.Render(shader);
-        shader.SetVec3(_camera.GetPosition(), Shader::CAMERA_POSITION);
-        shader.SetMat4(_camera.GetViewProjectionMatrix(), Shader::CAMERA_MATRIX);
     }
 
     _frameBuffer.Unbind();
@@ -101,14 +98,20 @@ void ScenePanel::Input(GLFWwindow *window)
 
     auto isUsingMouse = ImGuizmo::IsUsing() || _camera.IsMouseLocked();
 
+    // Don't allow scale and rotation of light sources for now.
+    auto isLightSourceSelected = Game::SelectedGameObject && Game::SelectedGameObject->GetType() == GameObject::Type::Light;
+
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS && !isUsingMouse)
         _activeGizmo = ImGuizmo::OPERATION::TRANSLATE;
 
-    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS && !isUsingMouse)
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS && !isUsingMouse && !isLightSourceSelected)
         _activeGizmo = ImGuizmo::OPERATION::ROTATE;
 
-    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS && !isUsingMouse)
+    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS && !isUsingMouse && !isLightSourceSelected)
         _activeGizmo = ImGuizmo::OPERATION::SCALE;
+
+    if (isLightSourceSelected && _activeGizmo != ImGuizmo::OPERATION::TRANSLATE)
+        _activeGizmo = ImGuizmo::OPERATION::TRANSLATE;
 }
 
 void ScenePanel::Resize(float width, float height)
@@ -129,12 +132,10 @@ void ScenePanel::OnMouseClick()
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    _pickingShader.Bind();
-    _pickingShader.SetMat4(_camera.GetViewProjectionMatrix(), Shader::CAMERA_MATRIX);
-
     for (int i = 0; i < Game::GameObjects.size(); ++i)
     {
         auto &gameObject = Game::GameObjects[i];
+        _pickingShader.Bind();
         _pickingShader.SetVec3(_pickingBuffer.EncodeId(i), Shader::PICKING_COLOR);
         gameObject.Render(_pickingShader);
     }

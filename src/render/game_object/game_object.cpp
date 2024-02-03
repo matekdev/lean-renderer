@@ -2,6 +2,7 @@
 
 #include "log.hpp"
 #include "game.hpp"
+#include "render/camera.hpp"
 
 #include <glm/gtc/matrix_transform.hpp>
 #define GLM_ENABLE_EXPERIMENTAL
@@ -50,6 +51,9 @@ glm::mat4 GameObject::GetTransform()
 
 void GameObject::Render(Shader &shader)
 {
+    shader.Bind();
+    shader.SetVec3(Camera::Instance->GetPosition(), Shader::CAMERA_POSITION);
+    shader.SetMat4(Camera::Instance->GetViewProjectionMatrix(), Shader::CAMERA_MATRIX);
     shader.SetBool(_texturesLoaded.size() > 0, Shader::HAS_TEXTURE);
     shader.SetVec3(Color, Shader::MODEL_COLOR);
     shader.SetMat4(GetTransform(), Shader::MODEL_MATRIX);
