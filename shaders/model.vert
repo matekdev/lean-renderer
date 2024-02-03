@@ -14,6 +14,6 @@ void main()
 {
     gl_Position = CameraMatrix * ModelMatrix * vec4(aPos.x, aPos.y, aPos.z, 1.0);
     FragPosition = vec3(ModelMatrix * vec4(aPos, 1.0));
-    Normal = aNormal;
+    Normal = mat3(transpose(inverse(ModelMatrix))) * aNormal;;
     TexCoord = aTexCoord;
 }
