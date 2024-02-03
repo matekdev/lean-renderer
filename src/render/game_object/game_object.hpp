@@ -29,6 +29,7 @@ public:
     int GetTriangleCount();
     glm::mat4 GetTransform();
     void Render(Shader &shader);
+    void RenderOutline(Shader &shader);
 
 private:
     inline static int _id;

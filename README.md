@@ -5,6 +5,7 @@
 - Import 3D textured models using [assimp](https://github.com/assimp/assimp)
 - Transform, rotate, and scale models using an imgui [gizmo](https://github.com/CedricGuillemet/ImGuizmo)
 - Modify the rendering of the 3D model (i.e wireframe, colour, etc.)
+- Phong lighting
 
 ![Example](screenshots/ex1.jpg)
 

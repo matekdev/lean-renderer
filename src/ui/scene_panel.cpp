@@ -18,6 +18,7 @@ ScenePanel::ScenePanel() : _frameBuffer(FrameBuffer()),
                            _pickingBuffer(FrameBuffer()), _camera(Camera()),
                            _modelShader(Shader("shaders/model.vert", "shaders/model.frag")),
                            _lightShader(Shader("shaders/light.vert", "shaders/light.frag")),
+                           _outlineShader(Shader("shaders/model.vert", "shaders/outline.frag")),
                            _pickingShader(Shader("shaders/picking.vert", "shaders/picking.frag"))
 {
     Game::GameObjects.push_back(GameObject("models/cube/cube.obj"));
@@ -84,6 +85,9 @@ void ScenePanel::RenderPass()
 
     for (auto &gameObject : Game::GameObjects)
     {
+        if (Game::SelectedGameObject == &gameObject)
+            gameObject.RenderOutline(_outlineShader);
+
         auto &shader = gameObject.GetType() == GameObject::Type::Model ? _modelShader : _lightShader;
         gameObject.Render(shader);
     }

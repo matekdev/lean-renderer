@@ -28,6 +28,7 @@ private:
 
     Shader _modelShader;
     Shader _lightShader;
+    Shader _outlineShader;
     Shader _pickingShader;
 
     Camera _camera;

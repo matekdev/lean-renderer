@@ -71,6 +71,18 @@ void GameObject::Render(Shader &shader)
     }
 }
 
+void GameObject::RenderOutline(Shader &shader)
+{
+    glDisable(GL_DEPTH_TEST);
+    auto originalScale = Scale;
+    auto outlineScale = originalScale * 1.02f;
+    Scale = outlineScale;
+    Render(shader);
+    Scale = originalScale;
+    glEnable(GL_DEPTH_TEST);
+    glDepthMask(GL_TRUE);
+}
+
 void GameObject::ProcessNode(aiNode *node, const aiScene *scene)
 {
     for (int i = 0; i < node->mNumMeshes; i++)
