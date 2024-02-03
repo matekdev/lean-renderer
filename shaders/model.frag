@@ -6,6 +6,7 @@ in vec3 FragPosition;
 
 out vec4 FragColor;
 
+uniform vec3 CameraPosition;
 uniform bool HasTexture;
 uniform vec3 ModelColor;
 uniform vec3 LightPosition;
@@ -28,5 +29,11 @@ void main()
     float diffuseImpact = max(dot(norm, lightDirection), 0.0);
     vec3 diffuseLight = diffuseImpact * LightColor;
 
-    FragColor = outputColor * vec4((ambientLight + diffuseLight) * ModelColor, 1.0);
+    // specular light
+    float specularLightingStrength = 0.5;
+    vec3 viewDirection = normalize(CameraPosition - FragPosition);
+    vec3 reflectDirection = reflect(-lightDirection, norm);
+    vec3 specularLight = specularLightingStrength * pow(max(dot(viewDirection, reflectDirection), 0.0), 32) * LightColor;
+
+    FragColor = outputColor * vec4((ambientLight + diffuseLight + specularLight) * ModelColor, 1.0);
 }

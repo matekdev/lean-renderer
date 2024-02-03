@@ -10,6 +10,11 @@ Camera::Camera()
 {
 }
 
+glm::vec3 Camera::GetPosition()
+{
+    return _position;
+}
+
 glm::mat4 Camera::GetViewMatrix()
 {
     return _viewMatrix;

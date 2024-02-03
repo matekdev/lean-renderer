@@ -87,6 +87,7 @@ void ScenePanel::RenderPass()
         auto &shader = gameObject.GetType() == GameObject::Type::Model ? _modelShader : _lightShader;
         shader.Bind();
         gameObject.Render(shader);
+        shader.SetVec3(_camera.GetPosition(), Shader::CAMERA_POSITION);
         shader.SetMat4(_camera.GetViewProjectionMatrix(), Shader::CAMERA_MATRIX);
     }
 
