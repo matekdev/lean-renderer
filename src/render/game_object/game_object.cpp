@@ -9,6 +9,9 @@
 #include <glm/gtx/quaternion.hpp>
 
 #include <numeric>
+#include <algorithm>
+#include <iterator>
+#include <functional>
 
 GameObject::GameObject(const std::string &filePath, const GameObject::Type &type) : _type(type)
 {
@@ -68,13 +71,21 @@ void GameObject::Render(Shader &shader)
     shader.SetVec3(Shader::MATERIAL_SPECULAR, Specular);
     shader.SetFloat(Shader::MATERIAL_SHININESS, Shininess);
 
-    if (Game::LightSource)
+    // We need a better way of doing this!! 💩
+    std::vector<GameObject *> lights;
+    for (auto &gameObject : Game::GameObjects)
+        if (gameObject.GetType() == GameObject::Type::Light)
+            lights.push_back(&gameObject);
+
+    shader.SetInt("LightCount", lights.size());
+    for (int i = 0; i < lights.size(); ++i)
     {
-        shader.SetVec3(Shader::LIGHT_POSITION, Game::LightSource->Position);
-        shader.SetVec3(Shader::LIGHT_AMBIENT, Game::LightSource->Ambient);
-        shader.SetVec3(Shader::LIGHT_DIFFUSE, Game::LightSource->Diffuse);
-        shader.SetVec3(Shader::LIGHT_SPECULAR, Game::LightSource->Specular);
-        shader.SetFloat(Shader::LIGHT_ATTENUTATION, Game::LightSource->Attenuation);
+        std::string location = "Lights[" + std::to_string(i) + "]";
+        shader.SetVec3(location + ".Position", lights[i]->Position);
+        shader.SetVec3(location + ".Ambient", lights[i]->Ambient);
+        shader.SetVec3(location + ".Diffuse", lights[i]->Diffuse);
+        shader.SetVec3(location + ".Specular", lights[i]->Specular);
+        shader.SetFloat(location + ".Attenuation", lights[i]->Attenuation);
     }
 
     for (auto &mesh : _meshes)

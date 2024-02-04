@@ -25,7 +25,7 @@ ScenePanel::ScenePanel() : _frameBuffer(FrameBuffer()),
     Game::GameObjects.push_back(GameObject("models/hamster/hamster.obj"));
 
     Game::GameObjects.push_back(GameObject("models/light/light.obj", GameObject::Type::Light));
-    Game::LightSource = &Game::GameObjects.back();
+    Game::GameObjects.push_back(GameObject("models/light/light.obj", GameObject::Type::Light));
 }
 
 void ScenePanel::Render(GLFWwindow *window)

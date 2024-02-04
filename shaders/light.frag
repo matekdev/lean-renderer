@@ -8,9 +8,9 @@ struct Material {
     vec3 Specular;
 };
 
-uniform Material LightSettings;
+uniform Material MaterialSettings;
 
 void main()
 {
-    FragColor = vec4(LightSettings.Ambient * LightSettings.Diffuse, 1.0);
+    FragColor = vec4(MaterialSettings.Ambient * MaterialSettings.Diffuse, 1.0);
 }

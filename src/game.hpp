@@ -10,7 +10,6 @@ class Game
 public:
     static inline std::vector<GameObject> GameObjects = {};
     static inline GameObject *SelectedGameObject;
-    static inline GameObject *LightSource;
     static inline float DeltaTime;
     static void CalculateDeltaTime();
 
