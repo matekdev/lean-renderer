@@ -67,9 +67,18 @@ void main()
     vec3 norm = normalize(Normal);
     vec3 viewDirection = normalize(CameraPosition - FragPosition);
 
-    vec3 lighting = vec3(0.0f);
-    for (int i = 0; i < LightCount; ++i)
-        lighting += CalculateLight(Lights[i], norm, FragPosition, viewDirection);
+    if (LightCount > 0)
+    {
+        vec3 lighting = vec3(0.0f);
+        for (int i = 0; i < LightCount; ++i)
+            lighting += CalculateLight(Lights[i], norm, FragPosition, viewDirection);
 
-    FragColor = outputColor * vec4(lighting, 1.0);
+        outputColor *= vec4(lighting, 1.0);
+    }
+    else
+    {
+        outputColor *= vec4(MaterialSettings.Ambient, 1.0);
+    }
+
+    FragColor = outputColor;
 }

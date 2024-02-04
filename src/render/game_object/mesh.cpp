@@ -65,3 +65,10 @@ void Mesh::Render(Shader &shader)
     glDrawElements(_renderingMode == 2 ? GL_POINTS : GL_TRIANGLES, _indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);
 }
+
+void Mesh::Delete()
+{
+    glDeleteBuffers(1, &_vbo);
+    glDeleteBuffers(1, &_ebo);
+    glDeleteVertexArrays(1, &_vao);
+}

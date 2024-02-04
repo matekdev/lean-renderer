@@ -16,6 +16,7 @@ public:
 
     void SetRenderingMode(int mode);
     void Render(Shader &shader);
+    void Delete();
 
 private:
     GLuint _vao;

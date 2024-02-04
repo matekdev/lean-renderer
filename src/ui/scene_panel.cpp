@@ -21,11 +21,6 @@ ScenePanel::ScenePanel() : _frameBuffer(FrameBuffer()),
                            _outlineShader(Shader("shaders/model.vert", "shaders/outline.frag")),
                            _pickingShader(Shader("shaders/picking.vert", "shaders/picking.frag"))
 {
-    Game::GameObjects.push_back(GameObject("models/cube/cube.obj"));
-    Game::GameObjects.push_back(GameObject("models/hamster/hamster.obj"));
-
-    Game::GameObjects.push_back(GameObject("models/light/light.obj", GameObject::Type::Light));
-    Game::GameObjects.push_back(GameObject("models/light/light.obj", GameObject::Type::Light));
 }
 
 void ScenePanel::Render(GLFWwindow *window)
@@ -110,6 +105,21 @@ void ScenePanel::Input(GLFWwindow *window)
 
     if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS && !isUsingMouse)
         _activeGizmo = ImGuizmo::OPERATION::SCALE;
+
+    if (glfwGetKey(window, GLFW_KEY_DELETE) == GLFW_PRESS && Game::SelectedGameObject)
+    {
+        Game::SelectedGameObject->Dispose();
+        Game::GameObjects.erase(
+            std::remove_if(
+                Game::GameObjects.begin(),
+                Game::GameObjects.end(),
+                [](GameObject &obj)
+                {
+                    return &obj == Game::SelectedGameObject;
+                }),
+            Game::GameObjects.end());
+        Game::SelectedGameObject = nullptr;
+    }
 }
 
 void ScenePanel::Resize(float width, float height)

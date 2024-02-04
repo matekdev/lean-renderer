@@ -24,8 +24,8 @@ GameObject::GameObject(const std::string &filePath, const GameObject::Type &type
         return;
     }
 
-    Name = filePath.substr(filePath.find_last_of("/\\") + 1) + std::to_string(_id++);
-    _directory = filePath.substr(0, filePath.find_last_of('/'));
+    Name = filePath.substr(filePath.find_last_of("\\") + 1) + std::to_string(_id++);
+    _directory = filePath.substr(0, filePath.find_last_of('\\'));
 
     if (type == GameObject::Type::Light)
     {
@@ -105,6 +105,12 @@ void GameObject::RenderOutline(Shader &shader)
     Scale = originalScale;
     glEnable(GL_DEPTH_TEST);
     glDepthMask(GL_TRUE);
+}
+
+void GameObject::Dispose()
+{
+    for (auto &mesh : _meshes)
+        mesh.Delete();
 }
 
 void GameObject::ProcessNode(aiNode *node, const aiScene *scene)

@@ -21,13 +21,13 @@ public:
     glm::vec3 Scale = glm::vec3(1.0f, 1.0f, 1.0f);
 
     // material settings
-    glm::vec3 Ambient = glm::vec3(0.5f, 0.5f, 0.5f);
+    glm::vec3 Ambient = glm::vec3(1.0f, 1.0f, 1.0f);
     glm::vec3 Diffuse = glm::vec3(0.5f, 0.5f, 0.5f);
     glm::vec3 Specular = glm::vec3(0.5f, 0.5f, 0.5f);
     float Shininess = 32.0f;
 
     // light settings
-    float Attenuation = 1.0f;
+    float Attenuation = 2.0f;
 
     int RenderingMode = 0;
 
@@ -39,6 +39,7 @@ public:
     glm::mat4 GetTransform();
     void Render(Shader &shader);
     void RenderOutline(Shader &shader);
+    void Dispose();
 
 private:
     inline static int _id;
