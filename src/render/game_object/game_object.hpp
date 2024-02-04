@@ -43,9 +43,9 @@ public:
 
 private:
     inline static int _id;
+    inline static std::vector<Texture> _texturesLoaded;
     Type _type;
     std::vector<Mesh> _meshes;
-    std::vector<Texture> _texturesLoaded;
     std::string _directory;
 
     int _vertexCount;
