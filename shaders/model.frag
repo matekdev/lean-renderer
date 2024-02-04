@@ -22,7 +22,6 @@ in vec3 FragPosition;
 out vec4 FragColor;
 
 uniform vec3 CameraPosition;
-uniform vec3 LightPosition;
 uniform bool HasTexture;
 uniform vec3 ModelColor;
 uniform Light LightSettings;
@@ -40,7 +39,7 @@ void main()
 
     // diffuse light
     vec3 norm = normalize(Normal);
-    vec3 lightDirection = normalize(LightPosition - FragPosition);
+    vec3 lightDirection = normalize(LightSettings.Position - FragPosition);
     float diffuseImpact = max(dot(norm, lightDirection), 0.0);
     vec3 diffuseLight = LightSettings.Diffuse * (diffuseImpact * MaterialSettings.Diffuse);
 
