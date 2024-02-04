@@ -11,11 +11,12 @@ class Shader
 public:
     inline static const std::string HAS_TEXTURE = "HasTexture";
     inline static const std::string CAMERA_POSITION = "CameraPosition";
-    inline static const std::string LIGHT_POSITION = "LightPosition";
 
+    inline static const std::string LIGHT_POSITION = "LightSettings.Position";
     inline static const std::string LIGHT_AMBIENT = "LightSettings.Ambient";
     inline static const std::string LIGHT_DIFFUSE = "LightSettings.Diffuse";
     inline static const std::string LIGHT_SPECULAR = "LightSettings.Specular";
+    inline static const std::string LIGHT_ATTENUTATION = "LightSettings.Attenuation";
 
     inline static const std::string MATERIAL_AMBIENT = "MaterialSettings.Ambient";
     inline static const std::string MATERIAL_DIFFUSE = "MaterialSettings.Diffuse";

@@ -74,6 +74,7 @@ void GameObject::Render(Shader &shader)
         shader.SetVec3(Shader::LIGHT_AMBIENT, Game::LightSource->Ambient);
         shader.SetVec3(Shader::LIGHT_DIFFUSE, Game::LightSource->Diffuse);
         shader.SetVec3(Shader::LIGHT_SPECULAR, Game::LightSource->Specular);
+        shader.SetFloat(Shader::LIGHT_ATTENUTATION, Game::LightSource->Attenuation);
     }
 
     for (auto &mesh : _meshes)

@@ -31,6 +31,9 @@ void InspectorPanel::Render()
 
             if (Game::SelectedGameObject->GetType() == GameObject::Type::Model)
                 ImGui::DragFloat("Shininess", &Game::SelectedGameObject->Shininess, 1.0f, 1.0f, 500.0f);
+
+            if (Game::SelectedGameObject->GetType() == GameObject::Type::Light)
+                ImGui::DragFloat("Attenuation", &Game::SelectedGameObject->Attenuation, 0.05f, 0.01f, 10.0f);
         }
 
         ImGui::Spacing();
