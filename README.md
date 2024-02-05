@@ -5,11 +5,13 @@
 - Import 3D textured models using [assimp](https://github.com/assimp/assimp)
 - Phong lighting
 - Material lighting properties
+- Multiple light sources
 - Transform, rotate, and scale models using an imgui [gizmo](https://github.com/CedricGuillemet/ImGuizmo)
 - Object selection/picking
 - Modify the rendering of the 3D model (i.e wireframe, colour, etc.)
 
 ![Example](screenshots/ex.jpg)
+![Example 2](screenshots/ex2.jpg)
 
 ## Building
 
