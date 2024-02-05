@@ -47,6 +47,7 @@ private:
     Type _type;
     std::vector<Mesh> _meshes;
     std::string _directory;
+    bool _hasTextures;
 
     int _vertexCount;
     int _triangleCount;

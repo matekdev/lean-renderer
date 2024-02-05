@@ -63,7 +63,7 @@ void GameObject::Render(Shader &shader)
     shader.Bind();
     shader.SetVec3(Shader::CAMERA_POSITION, Camera::Instance->GetPosition());
     shader.SetMat4(Shader::CAMERA_MATRIX, Camera::Instance->GetViewProjectionMatrix());
-    shader.SetBool(Shader::HAS_TEXTURE, _texturesLoaded.size() > 0);
+    shader.SetBool(Shader::HAS_TEXTURE, _hasTextures);
     shader.SetMat4(Shader::MODEL_MATRIX, GetTransform());
 
     shader.SetVec3(Shader::MATERIAL_AMBIENT, Ambient);
@@ -196,6 +196,8 @@ Mesh GameObject::ProcessMesh(aiMesh *mesh, const aiScene *scene)
     // 4. height maps
     std::vector<Texture> heightMaps = LoadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
     textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
+
+    _hasTextures = textures.size() > 0;
 
     // return a mesh object created from the extracted mesh data
     return Mesh(vertices, indices, textures);
