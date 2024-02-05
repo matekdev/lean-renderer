@@ -26,15 +26,14 @@ void ObjectsPanel::Render()
 {
     ImGui::Begin("Objects");
 
-    if (ImGui::Button("Create"))
+    if (ImGui::Button("Create GameObject", ImVec2(ImGui::GetContentRegionMax().x, 30.0f)))
         ImGui::OpenPopup("create_menu");
     if (ImGui::BeginPopup("create_menu"))
     {
-        ImGui::Separator();
         for (auto &path : _modelPaths)
         {
             auto fileName = path.substr(path.find_last_of("\\") + 1);
-            if (ImGui::Button(fileName.c_str()))
+            if (ImGui::Button(fileName.c_str(), ImVec2(ImGui::GetContentRegionAvail().x, 20.0f)))
             {
                 // Unique case for light, this could be written better!
                 auto isLight = path.contains("light");
@@ -46,6 +45,8 @@ void ObjectsPanel::Render()
         ImGui::EndPopup();
     }
 
+    ImGui::Spacing();
+    ImGui::Separator();
     ImGui::Spacing();
 
     for (auto &gameObject : Game::GameObjects)
