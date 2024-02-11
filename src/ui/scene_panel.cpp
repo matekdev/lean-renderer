@@ -53,8 +53,22 @@ void ScenePanel::Render(GLFWwindow *window)
         ImGuizmo::SetDrawlist();
         ImGuizmo::SetRect(_viewPortBounds[0].x, _viewPortBounds[0].y, _viewPortBounds[1].x - _viewPortBounds[0].x, _viewPortBounds[1].y - _viewPortBounds[0].y);
 
+        auto shouldSnap = glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS;
+        float snapValue = 0.5f; // Snap to 0.5m for translation/scale
+        if (_activeGizmo == ImGuizmo::OPERATION::ROTATE)
+            snapValue = 45.0f;
+
+        float snapValues[3] = {snapValue, snapValue, snapValue};
+
         glm::mat4 transform = Game::SelectedGameObject->GetTransform();
-        ImGuizmo::Manipulate(glm::value_ptr(_camera.GetViewMatrix()), glm::value_ptr(_camera.GetProjectionMatrix()), _activeGizmo, ImGuizmo::WORLD, glm::value_ptr(transform), nullptr, nullptr, nullptr, nullptr);
+        ImGuizmo::Manipulate(glm::value_ptr(_camera.GetViewMatrix()),
+                             glm::value_ptr(_camera.GetProjectionMatrix()),
+                             _activeGizmo, ImGuizmo::WORLD,
+                             glm::value_ptr(transform),
+                             nullptr,
+                             shouldSnap ? snapValues : nullptr,
+                             nullptr,
+                             nullptr);
 
         if (ImGuizmo::IsUsing())
         {
