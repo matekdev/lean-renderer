@@ -12,6 +12,7 @@
 
 ![Example](screenshots/ex.jpg)
 ![Example 2](screenshots/ex2.jpg)
+![Example 2](screenshots/ex3.jpg)
 
 ## Building
 
