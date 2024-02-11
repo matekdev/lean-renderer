@@ -21,7 +21,6 @@ ScenePanel::ScenePanel() : _frameBuffer(FrameBuffer()),
                            _outlineShader(Shader("shaders/model.vert", "shaders/outline.frag")),
                            _pickingShader(Shader("shaders/picking.vert", "shaders/picking.frag"))
 {
-    Game::GameObjects.push_back(GameObject("models/cube/cube.obj"));
 }
 
 void ScenePanel::Render(GLFWwindow *window)
