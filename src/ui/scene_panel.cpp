@@ -156,9 +156,10 @@ void ScenePanel::OnMouseClick()
 
     for (int i = 0; i < Game::GameObjects.size(); ++i)
     {
-        auto &gameObject = Game::GameObjects[i];
         _pickingShader.Bind();
         _pickingShader.SetVec3(Shader::PICKING_COLOR, _pickingBuffer.EncodeId(i));
+
+        auto &gameObject = Game::GameObjects[i];
         gameObject.Render(_pickingShader);
     }
 
